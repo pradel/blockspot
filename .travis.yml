@@ -1,0 +1,17 @@
+language: node_js
+
+sudo: false
+
+cache: yarn
+
+node_js:
+  - "10"
+
+install:
+  - yarn
+
+script:
+  - yarn build
+
+notifications:
+  email: false
