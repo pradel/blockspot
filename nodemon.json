@@ -1,0 +1,6 @@
+{
+  "watch": ["server/**/*.ts"],
+  "execMap": {
+    "ts": "env-cmd --no-override .env.dev ts-node --typeCheck  --files --compilerOptions '{\"module\":\"commonjs\"}'"
+  }
+}

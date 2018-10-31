@@ -1,0 +1,949 @@
+# columns and relationships of "cities"
+type cities {
+  # An object relationship
+  country: countries!
+  country_id: uuid!
+  created_at: timestamptz!
+  google_id: String!
+  id: uuid!
+  latitude: Float!
+  longitude: Float!
+  name: String!
+  nb_places: Int!
+
+  # An array relationship
+  places(
+    # limit the nuber of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [places_order_by!]
+
+    # filter the rows returned
+    where: places_bool_exp
+  ): [places!]!
+  slug: String!
+  unsplash_id: String!
+  updated_at: timestamptz!
+}
+
+# input type for inserting array relation for remote table "cities"
+input cities_arr_rel_insert_input {
+  data: [cities_insert_input!]!
+  on_conflict: cities_on_conflict
+}
+
+# Boolean expression to filter rows from the table "cities". All fields are combined with a logical 'AND'.
+input cities_bool_exp {
+  _and: [cities_bool_exp]
+  _not: cities_bool_exp
+  _or: [cities_bool_exp]
+  country: countries_bool_exp
+  country_id: uuid_comparison_exp
+  created_at: timestamptz_comparison_exp
+  google_id: varchar_comparison_exp
+  id: uuid_comparison_exp
+  latitude: real_comparison_exp
+  longitude: real_comparison_exp
+  name: varchar_comparison_exp
+  nb_places: integer_comparison_exp
+  places: places_bool_exp
+  slug: varchar_comparison_exp
+  unsplash_id: varchar_comparison_exp
+  updated_at: timestamptz_comparison_exp
+}
+
+# columns of table "cities"
+enum cities_column {
+  # column name
+  country_id
+
+  # column name
+  created_at
+
+  # column name
+  google_id
+
+  # column name
+  id
+
+  # column name
+  latitude
+
+  # column name
+  longitude
+
+  # column name
+  name
+
+  # column name
+  nb_places
+
+  # column name
+  slug
+
+  # column name
+  unsplash_id
+
+  # column name
+  updated_at
+}
+
+# unique or primary key constraints on table "cities"
+enum cities_constraint {
+  # unique or primary key constraint
+  cities_pkey
+}
+
+# input type for incrementing integer columne in table "cities"
+input cities_inc_input {
+  nb_places: Int
+}
+
+# input type for inserting data into table "cities"
+input cities_insert_input {
+  country: countries_obj_rel_insert_input
+  country_id: uuid
+  created_at: timestamptz
+  google_id: String
+  id: uuid
+  latitude: Float
+  longitude: Float
+  name: String
+  nb_places: Int
+  places: places_arr_rel_insert_input
+  slug: String
+  unsplash_id: String
+  updated_at: timestamptz
+}
+
+# response of any mutation on the table "cities"
+type cities_mutation_response {
+  # number of affected rows by the mutation
+  affected_rows: Int!
+
+  # data of the affected rows by the mutation
+  returning: [cities!]!
+}
+
+# input type for inserting object relation for remote table "cities"
+input cities_obj_rel_insert_input {
+  data: cities_insert_input!
+  on_conflict: cities_on_conflict
+}
+
+# on conflict condition type for table "cities"
+input cities_on_conflict {
+  # action when conflict occurs (deprecated)
+  action: conflict_action
+  constraint: cities_constraint!
+  update_columns: [cities_column!]
+}
+
+# ordering options when selecting data from "cities"
+enum cities_order_by {
+  # in the ascending order of "country_id", nulls last
+  country_id_asc
+
+  # in the ascending order of "country_id", nulls first
+  country_id_asc_nulls_first
+
+  # in the descending order of "country_id", nulls last
+  country_id_desc
+
+  # in the descending order of "country_id", nulls first
+  country_id_desc_nulls_first
+
+  # in the ascending order of "created_at", nulls last
+  created_at_asc
+
+  # in the ascending order of "created_at", nulls first
+  created_at_asc_nulls_first
+
+  # in the descending order of "created_at", nulls last
+  created_at_desc
+
+  # in the descending order of "created_at", nulls first
+  created_at_desc_nulls_first
+
+  # in the ascending order of "google_id", nulls last
+  google_id_asc
+
+  # in the ascending order of "google_id", nulls first
+  google_id_asc_nulls_first
+
+  # in the descending order of "google_id", nulls last
+  google_id_desc
+
+  # in the descending order of "google_id", nulls first
+  google_id_desc_nulls_first
+
+  # in the ascending order of "id", nulls last
+  id_asc
+
+  # in the ascending order of "id", nulls first
+  id_asc_nulls_first
+
+  # in the descending order of "id", nulls last
+  id_desc
+
+  # in the descending order of "id", nulls first
+  id_desc_nulls_first
+
+  # in the ascending order of "latitude", nulls last
+  latitude_asc
+
+  # in the ascending order of "latitude", nulls first
+  latitude_asc_nulls_first
+
+  # in the descending order of "latitude", nulls last
+  latitude_desc
+
+  # in the descending order of "latitude", nulls first
+  latitude_desc_nulls_first
+
+  # in the ascending order of "longitude", nulls last
+  longitude_asc
+
+  # in the ascending order of "longitude", nulls first
+  longitude_asc_nulls_first
+
+  # in the descending order of "longitude", nulls last
+  longitude_desc
+
+  # in the descending order of "longitude", nulls first
+  longitude_desc_nulls_first
+
+  # in the ascending order of "name", nulls last
+  name_asc
+
+  # in the ascending order of "name", nulls first
+  name_asc_nulls_first
+
+  # in the descending order of "name", nulls last
+  name_desc
+
+  # in the descending order of "name", nulls first
+  name_desc_nulls_first
+
+  # in the ascending order of "nb_places", nulls last
+  nb_places_asc
+
+  # in the ascending order of "nb_places", nulls first
+  nb_places_asc_nulls_first
+
+  # in the descending order of "nb_places", nulls last
+  nb_places_desc
+
+  # in the descending order of "nb_places", nulls first
+  nb_places_desc_nulls_first
+
+  # in the ascending order of "slug", nulls last
+  slug_asc
+
+  # in the ascending order of "slug", nulls first
+  slug_asc_nulls_first
+
+  # in the descending order of "slug", nulls last
+  slug_desc
+
+  # in the descending order of "slug", nulls first
+  slug_desc_nulls_first
+
+  # in the ascending order of "unsplash_id", nulls last
+  unsplash_id_asc
+
+  # in the ascending order of "unsplash_id", nulls first
+  unsplash_id_asc_nulls_first
+
+  # in the descending order of "unsplash_id", nulls last
+  unsplash_id_desc
+
+  # in the descending order of "unsplash_id", nulls first
+  unsplash_id_desc_nulls_first
+
+  # in the ascending order of "updated_at", nulls last
+  updated_at_asc
+
+  # in the ascending order of "updated_at", nulls first
+  updated_at_asc_nulls_first
+
+  # in the descending order of "updated_at", nulls last
+  updated_at_desc
+
+  # in the descending order of "updated_at", nulls first
+  updated_at_desc_nulls_first
+}
+
+# input type for updating data in table "cities"
+input cities_set_input {
+  country_id: uuid
+  created_at: timestamptz
+  google_id: String
+  id: uuid
+  latitude: Float
+  longitude: Float
+  name: String
+  nb_places: Int
+  slug: String
+  unsplash_id: String
+  updated_at: timestamptz
+}
+
+# conflict action
+enum conflict_action {
+  # ignore the insert on this row
+  ignore
+
+  # update the row with the given values
+  update
+}
+
+# columns and relationships of "countries"
+type countries {
+  # An array relationship
+  cities(
+    # limit the nuber of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [cities_order_by!]
+
+    # filter the rows returned
+    where: cities_bool_exp
+  ): [cities!]!
+  created_at: timestamptz!
+  google_id: String!
+  id: uuid!
+  latitude: Float!
+  longitude: Float!
+  name: String!
+  slug: String!
+  updated_at: timestamptz!
+}
+
+# input type for inserting array relation for remote table "countries"
+input countries_arr_rel_insert_input {
+  data: [countries_insert_input!]!
+  on_conflict: countries_on_conflict
+}
+
+# Boolean expression to filter rows from the table "countries". All fields are combined with a logical 'AND'.
+input countries_bool_exp {
+  _and: [countries_bool_exp]
+  _not: countries_bool_exp
+  _or: [countries_bool_exp]
+  cities: cities_bool_exp
+  created_at: timestamptz_comparison_exp
+  google_id: varchar_comparison_exp
+  id: uuid_comparison_exp
+  latitude: real_comparison_exp
+  longitude: real_comparison_exp
+  name: varchar_comparison_exp
+  slug: varchar_comparison_exp
+  updated_at: timestamptz_comparison_exp
+}
+
+# columns of table "countries"
+enum countries_column {
+  # column name
+  created_at
+
+  # column name
+  google_id
+
+  # column name
+  id
+
+  # column name
+  latitude
+
+  # column name
+  longitude
+
+  # column name
+  name
+
+  # column name
+  slug
+
+  # column name
+  updated_at
+}
+
+# unique or primary key constraints on table "countries"
+enum countries_constraint {
+  # unique or primary key constraint
+  countries_pkey
+}
+
+# input type for inserting data into table "countries"
+input countries_insert_input {
+  cities: cities_arr_rel_insert_input
+  created_at: timestamptz
+  google_id: String
+  id: uuid
+  latitude: Float
+  longitude: Float
+  name: String
+  slug: String
+  updated_at: timestamptz
+}
+
+# response of any mutation on the table "countries"
+type countries_mutation_response {
+  # number of affected rows by the mutation
+  affected_rows: Int!
+
+  # data of the affected rows by the mutation
+  returning: [countries!]!
+}
+
+# input type for inserting object relation for remote table "countries"
+input countries_obj_rel_insert_input {
+  data: countries_insert_input!
+  on_conflict: countries_on_conflict
+}
+
+# on conflict condition type for table "countries"
+input countries_on_conflict {
+  # action when conflict occurs (deprecated)
+  action: conflict_action
+  constraint: countries_constraint!
+  update_columns: [countries_column!]
+}
+
+# ordering options when selecting data from "countries"
+enum countries_order_by {
+  # in the ascending order of "created_at", nulls last
+  created_at_asc
+
+  # in the ascending order of "created_at", nulls first
+  created_at_asc_nulls_first
+
+  # in the descending order of "created_at", nulls last
+  created_at_desc
+
+  # in the descending order of "created_at", nulls first
+  created_at_desc_nulls_first
+
+  # in the ascending order of "google_id", nulls last
+  google_id_asc
+
+  # in the ascending order of "google_id", nulls first
+  google_id_asc_nulls_first
+
+  # in the descending order of "google_id", nulls last
+  google_id_desc
+
+  # in the descending order of "google_id", nulls first
+  google_id_desc_nulls_first
+
+  # in the ascending order of "id", nulls last
+  id_asc
+
+  # in the ascending order of "id", nulls first
+  id_asc_nulls_first
+
+  # in the descending order of "id", nulls last
+  id_desc
+
+  # in the descending order of "id", nulls first
+  id_desc_nulls_first
+
+  # in the ascending order of "latitude", nulls last
+  latitude_asc
+
+  # in the ascending order of "latitude", nulls first
+  latitude_asc_nulls_first
+
+  # in the descending order of "latitude", nulls last
+  latitude_desc
+
+  # in the descending order of "latitude", nulls first
+  latitude_desc_nulls_first
+
+  # in the ascending order of "longitude", nulls last
+  longitude_asc
+
+  # in the ascending order of "longitude", nulls first
+  longitude_asc_nulls_first
+
+  # in the descending order of "longitude", nulls last
+  longitude_desc
+
+  # in the descending order of "longitude", nulls first
+  longitude_desc_nulls_first
+
+  # in the ascending order of "name", nulls last
+  name_asc
+
+  # in the ascending order of "name", nulls first
+  name_asc_nulls_first
+
+  # in the descending order of "name", nulls last
+  name_desc
+
+  # in the descending order of "name", nulls first
+  name_desc_nulls_first
+
+  # in the ascending order of "slug", nulls last
+  slug_asc
+
+  # in the ascending order of "slug", nulls first
+  slug_asc_nulls_first
+
+  # in the descending order of "slug", nulls last
+  slug_desc
+
+  # in the descending order of "slug", nulls first
+  slug_desc_nulls_first
+
+  # in the ascending order of "updated_at", nulls last
+  updated_at_asc
+
+  # in the ascending order of "updated_at", nulls first
+  updated_at_asc_nulls_first
+
+  # in the descending order of "updated_at", nulls last
+  updated_at_desc
+
+  # in the descending order of "updated_at", nulls first
+  updated_at_desc_nulls_first
+}
+
+# input type for updating data in table "countries"
+input countries_set_input {
+  created_at: timestamptz
+  google_id: String
+  id: uuid
+  latitude: Float
+  longitude: Float
+  name: String
+  slug: String
+  updated_at: timestamptz
+}
+
+input InputCreatePlace {
+  cityId: String!
+  googleId: String!
+  recaptcha: String!
+  category: String!
+}
+
+# expression to compare columns of type integer. All fields are combined with logical 'AND'.
+input integer_comparison_exp {
+  _eq: Int
+  _gt: Int
+  _gte: Int
+  _in: [Int]
+  _is_null: Boolean
+  _lt: Int
+  _lte: Int
+  _neq: Int
+  _nin: [Int]
+}
+
+type Mutation {
+  createPlace(input: InputCreatePlace!): places!
+}
+
+# columns and relationships of "places"
+type places {
+  address: String!
+  category: String!
+
+  # An object relationship
+  city: cities!
+  city_id: uuid!
+  created_at: timestamptz!
+  google_id: String!
+  id: uuid!
+  latitude: Float!
+  longitude: Float!
+  name: String!
+  slug: String!
+  updated_at: timestamptz!
+}
+
+# input type for inserting array relation for remote table "places"
+input places_arr_rel_insert_input {
+  data: [places_insert_input!]!
+  on_conflict: places_on_conflict
+}
+
+# Boolean expression to filter rows from the table "places". All fields are combined with a logical 'AND'.
+input places_bool_exp {
+  _and: [places_bool_exp]
+  _not: places_bool_exp
+  _or: [places_bool_exp]
+  address: varchar_comparison_exp
+  category: varchar_comparison_exp
+  city: cities_bool_exp
+  city_id: uuid_comparison_exp
+  created_at: timestamptz_comparison_exp
+  google_id: varchar_comparison_exp
+  id: uuid_comparison_exp
+  latitude: real_comparison_exp
+  longitude: real_comparison_exp
+  name: varchar_comparison_exp
+  slug: varchar_comparison_exp
+  updated_at: timestamptz_comparison_exp
+}
+
+# columns of table "places"
+enum places_column {
+  # column name
+  address
+
+  # column name
+  category
+
+  # column name
+  city_id
+
+  # column name
+  created_at
+
+  # column name
+  google_id
+
+  # column name
+  id
+
+  # column name
+  latitude
+
+  # column name
+  longitude
+
+  # column name
+  name
+
+  # column name
+  slug
+
+  # column name
+  updated_at
+}
+
+# unique or primary key constraints on table "places"
+enum places_constraint {
+  # unique or primary key constraint
+  places_pkey
+}
+
+# input type for inserting data into table "places"
+input places_insert_input {
+  address: String
+  category: String
+  city: cities_obj_rel_insert_input
+  city_id: uuid
+  created_at: timestamptz
+  google_id: String
+  id: uuid
+  latitude: Float
+  longitude: Float
+  name: String
+  slug: String
+  updated_at: timestamptz
+}
+
+# response of any mutation on the table "places"
+type places_mutation_response {
+  # number of affected rows by the mutation
+  affected_rows: Int!
+
+  # data of the affected rows by the mutation
+  returning: [places!]!
+}
+
+# input type for inserting object relation for remote table "places"
+input places_obj_rel_insert_input {
+  data: places_insert_input!
+  on_conflict: places_on_conflict
+}
+
+# on conflict condition type for table "places"
+input places_on_conflict {
+  # action when conflict occurs (deprecated)
+  action: conflict_action
+  constraint: places_constraint!
+  update_columns: [places_column!]
+}
+
+# ordering options when selecting data from "places"
+enum places_order_by {
+  # in the ascending order of "address", nulls last
+  address_asc
+
+  # in the ascending order of "address", nulls first
+  address_asc_nulls_first
+
+  # in the descending order of "address", nulls last
+  address_desc
+
+  # in the descending order of "address", nulls first
+  address_desc_nulls_first
+
+  # in the ascending order of "category", nulls last
+  category_asc
+
+  # in the ascending order of "category", nulls first
+  category_asc_nulls_first
+
+  # in the descending order of "category", nulls last
+  category_desc
+
+  # in the descending order of "category", nulls first
+  category_desc_nulls_first
+
+  # in the ascending order of "city_id", nulls last
+  city_id_asc
+
+  # in the ascending order of "city_id", nulls first
+  city_id_asc_nulls_first
+
+  # in the descending order of "city_id", nulls last
+  city_id_desc
+
+  # in the descending order of "city_id", nulls first
+  city_id_desc_nulls_first
+
+  # in the ascending order of "created_at", nulls last
+  created_at_asc
+
+  # in the ascending order of "created_at", nulls first
+  created_at_asc_nulls_first
+
+  # in the descending order of "created_at", nulls last
+  created_at_desc
+
+  # in the descending order of "created_at", nulls first
+  created_at_desc_nulls_first
+
+  # in the ascending order of "google_id", nulls last
+  google_id_asc
+
+  # in the ascending order of "google_id", nulls first
+  google_id_asc_nulls_first
+
+  # in the descending order of "google_id", nulls last
+  google_id_desc
+
+  # in the descending order of "google_id", nulls first
+  google_id_desc_nulls_first
+
+  # in the ascending order of "id", nulls last
+  id_asc
+
+  # in the ascending order of "id", nulls first
+  id_asc_nulls_first
+
+  # in the descending order of "id", nulls last
+  id_desc
+
+  # in the descending order of "id", nulls first
+  id_desc_nulls_first
+
+  # in the ascending order of "latitude", nulls last
+  latitude_asc
+
+  # in the ascending order of "latitude", nulls first
+  latitude_asc_nulls_first
+
+  # in the descending order of "latitude", nulls last
+  latitude_desc
+
+  # in the descending order of "latitude", nulls first
+  latitude_desc_nulls_first
+
+  # in the ascending order of "longitude", nulls last
+  longitude_asc
+
+  # in the ascending order of "longitude", nulls first
+  longitude_asc_nulls_first
+
+  # in the descending order of "longitude", nulls last
+  longitude_desc
+
+  # in the descending order of "longitude", nulls first
+  longitude_desc_nulls_first
+
+  # in the ascending order of "name", nulls last
+  name_asc
+
+  # in the ascending order of "name", nulls first
+  name_asc_nulls_first
+
+  # in the descending order of "name", nulls last
+  name_desc
+
+  # in the descending order of "name", nulls first
+  name_desc_nulls_first
+
+  # in the ascending order of "slug", nulls last
+  slug_asc
+
+  # in the ascending order of "slug", nulls first
+  slug_asc_nulls_first
+
+  # in the descending order of "slug", nulls last
+  slug_desc
+
+  # in the descending order of "slug", nulls first
+  slug_desc_nulls_first
+
+  # in the ascending order of "updated_at", nulls last
+  updated_at_asc
+
+  # in the ascending order of "updated_at", nulls first
+  updated_at_asc_nulls_first
+
+  # in the descending order of "updated_at", nulls last
+  updated_at_desc
+
+  # in the descending order of "updated_at", nulls first
+  updated_at_desc_nulls_first
+}
+
+# input type for updating data in table "places"
+input places_set_input {
+  address: String
+  category: String
+  city_id: uuid
+  created_at: timestamptz
+  google_id: String
+  id: uuid
+  latitude: Float
+  longitude: Float
+  name: String
+  slug: String
+  updated_at: timestamptz
+}
+
+type Query {
+  # fetch data from the table: "cities"
+  cities(
+    # limit the nuber of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [cities_order_by!]
+
+    # filter the rows returned
+    where: cities_bool_exp
+  ): [cities!]!
+
+  # fetch data from the table: "cities" using primary key columns
+  cities_by_pk(id: uuid!): cities
+
+  # fetch data from the table: "countries"
+  countries(
+    # limit the nuber of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [countries_order_by!]
+
+    # filter the rows returned
+    where: countries_bool_exp
+  ): [countries!]!
+
+  # fetch data from the table: "countries" using primary key columns
+  countries_by_pk(id: uuid!): countries
+
+  # fetch data from the table: "places"
+  places(
+    # limit the nuber of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [places_order_by!]
+
+    # filter the rows returned
+    where: places_bool_exp
+  ): [places!]!
+
+  # fetch data from the table: "places" using primary key columns
+  places_by_pk(id: uuid!): places
+  _: Boolean
+}
+
+# expression to compare columns of type real. All fields are combined with logical 'AND'.
+input real_comparison_exp {
+  _eq: Float
+  _gt: Float
+  _gte: Float
+  _in: [Float]
+  _is_null: Boolean
+  _lt: Float
+  _lte: Float
+  _neq: Float
+  _nin: [Float]
+}
+
+scalar timestamptz
+
+# expression to compare columns of type timestamptz. All fields are combined with logical 'AND'.
+input timestamptz_comparison_exp {
+  _eq: timestamptz
+  _gt: timestamptz
+  _gte: timestamptz
+  _in: [timestamptz]
+  _is_null: Boolean
+  _lt: timestamptz
+  _lte: timestamptz
+  _neq: timestamptz
+  _nin: [timestamptz]
+}
+
+scalar uuid
+
+# expression to compare columns of type uuid. All fields are combined with logical 'AND'.
+input uuid_comparison_exp {
+  _eq: uuid
+  _gt: uuid
+  _gte: uuid
+  _in: [uuid]
+  _is_null: Boolean
+  _lt: uuid
+  _lte: uuid
+  _neq: uuid
+  _nin: [uuid]
+}
+
+# expression to compare columns of type varchar. All fields are combined with logical 'AND'.
+input varchar_comparison_exp {
+  _eq: String
+  _gt: String
+  _gte: String
+  _ilike: String
+  _in: [String]
+  _is_null: Boolean
+  _like: String
+  _lt: String
+  _lte: String
+  _neq: String
+  _nilike: String
+  _nin: [String]
+  _nlike: String
+  _nsimilar: String
+  _similar: String
+}
+

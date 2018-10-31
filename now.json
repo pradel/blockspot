@@ -1,0 +1,41 @@
+{
+  "name": "blockspot",
+  "public": true,
+  "alias": ["blockspot.app", "www.blockspot.app"],
+  "type": "npm",
+  "engines": {
+    "node": "^10.0.0"
+  },
+  "env": {
+    "GOOGLE_API_KEY": "@blockspot-google-api-key",
+    "GOOGLE_ANALYTICS_TRACKING_CODE": "UA-127130298-1",
+    "GOOGLE_MAPS_API_KEY": "@blockspot-google-maps-api-key",
+    "GOOGLE_RECAPTCHA_CLIENT_KEY": "@blockspot-google-recaptcha-client-key",
+    "GOOGLE_RECAPTCHA_SERVER_KEY": "@blockspot-google-recaptcha-server-key",
+    "MAPBOX_TOKEN": "@blockspot-mapbox-token",
+    "PG_CONNECTION_STRING": "@blockspot-pg-test",
+    "PGSSLMODE": "require",
+    "SLACK_WEBHOOK_URL": "@blockspot-slack-webhook-url",
+    "APP_URL": "https://blockspot.app",
+    "HASURA_URL": "https://hasura.blockspot.app",
+    "HASURA_GRAPHQL_ACCESS_KEY": "@blockspot-hasura-access-key",
+    "JWT_SECRET": "@blockspot-jwt-secret"
+  },
+  "files": [
+    ".babelrc",
+    "tsconfig.server.json",
+    "knexfile.js",
+    "migrations",
+    "server",
+    "tsconfig.json",
+    "next.config.js",
+    "pages",
+    "client",
+    "__generated__",
+    "static",
+    "package.json",
+    "yarn.lock",
+    "scripts",
+    "hasura"
+  ]
+}

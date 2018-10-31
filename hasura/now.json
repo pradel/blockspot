@@ -1,0 +1,17 @@
+{
+  "name": "blockspot-hasura",
+  "alias": ["hasura.blockspot.app"],
+  "public": true,
+  "features": {
+    "cloud": "v2"
+  },
+  "env": {
+    "HASURA_GRAPHQL_DATABASE_URL": "@blockspot-pg-test",
+    "HASURA_GRAPHQL_ACCESS_KEY": "@blockspot-hasura-access-key",
+    "HASURA_GRAPHQL_UNAUTHORIZED_ROLE": "anonymous",
+    "HASURA_GRAPHQL_JWT_SECRET": "@blockspot-hasura-jwt-secret"
+  },
+  "files": [
+    "Dockerfile"
+  ]
+}
