@@ -13,5 +13,9 @@
   },
   "files": [
     "Dockerfile"
-  ]
+  ],
+  "limits": {
+    "timeout": 360000,
+    "maxConcurrentReqs": 100
+  }
 }
