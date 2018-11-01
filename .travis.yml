@@ -1,11 +1,14 @@
 language: node_js
 
+notifications:
+  email: false
+
 sudo: false
 
 cache: yarn
 
 node_js:
-  - "10"
+  - '10'
 
 install:
   - yarn
@@ -13,5 +16,15 @@ install:
 script:
   - yarn build
 
-notifications:
-  email: false
+before_deploy:
+  - npm i -g now
+deploy:
+  - provider: script
+    script:
+      # Deploy hasura
+      - cd hasura && now --token $NOW_TOKEN && now alias --token $NOW_TOKEN
+      # Deploy app
+      - now --token $NOW_TOKEN && now alias --token $NOW_TOKEN
+    skip_cleanup: true
+    on:
+      master: true
