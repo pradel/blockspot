@@ -19,12 +19,15 @@ script:
 before_deploy:
   - npm i -g now
 deploy:
+  # Deploy hasura
   - provider: script
-    script:
-      # Deploy hasura
-      - cd hasura && now --token $NOW_TOKEN && now alias --token $NOW_TOKEN
-      # Deploy app
-      - now --token $NOW_TOKEN && now alias --token $NOW_TOKEN
+    script: cd hasura && now --token $NOW_TOKEN && now alias --token $NOW_TOKEN
+    skip_cleanup: true
+    on:
+      master: true
+  # Deploy app
+  - provider: script
+    script: now --token $NOW_TOKEN && now alias --token $NOW_TOKEN
     skip_cleanup: true
     on:
       master: true
