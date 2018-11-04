@@ -13,7 +13,7 @@
     "prettier": "prettier --write '**/*.{js,ts,tsx}'",
     "start": "NODE_ENV=production node .next/production-server/server/index.js",
     "production:migrate": "yarn knex migrate:latest && ./cli-hasura-linux-amd64 metadata apply --project ./hasura/ --endpoint $HASURA_URL --access-key $HASURA_GRAPHQL_ACCESS_KEY",
-    "now-build": "wget https://github.com/hasura/graphql-engine/releases/download/v1.0.0-alpha27/cli-hasura-linux-amd64 && chmod 755 ./cli-hasura-linux-amd64 && yarn build && yarn production:migrate",
+    "now-build": "wget https://github.com/hasura/graphql-engine/releases/download/v1.0.0-alpha28/cli-hasura-linux-amd64 && chmod 755 ./cli-hasura-linux-amd64 && yarn build && yarn production:migrate",
     "commit": "git-cz"
   },
   "prettier": {
