@@ -1,2 +1,2 @@
-get-graphql-schema http://localhost:8080/v1alpha1/graphql > ./hasura/schema.graphql
+get-graphql-schema http://graphql-engine:8080/v1alpha1/graphql -h 'Authorization=Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwczovL2hhc3VyYS5pby9qd3QvY2xhaW1zIjp7IngtaGFzdXJhLWFsbG93ZWQtcm9sZXMiOlsiYWRtaW4iXSwieC1oYXN1cmEtZGVmYXVsdC1yb2xlIjoiYWRtaW4ifSwiaWF0IjoxNTQxMzI1NzAxfQ.pT_6TvdyG_zkvu6bDg1pKNN1D5VabK_vbhdWsKikLjI' > ./hasura/schema.graphql
 yarn graphql-binding --input ./hasura/schema.js --language typescript --outputBinding server/generated/binding.ts

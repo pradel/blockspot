@@ -5,7 +5,8 @@ import styled from 'styled-components';
 import Error from 'next/error';
 import Link from 'next/link';
 import { Container } from '../../components';
-import { cities } from './__generated__/cities';
+import { cities, citiesVariables } from './__generated__/cities';
+import { order_by } from '../../../__generated__/globalTypes';
 
 const CityCardContainer: any = styled.div`
   background: url(https://source.unsplash.com/${(props: any) =>
@@ -83,8 +84,8 @@ const CityCard: React.SFC<CityCard> = ({ city }) => (
 );
 
 export const CITIES_QUERY = gql`
-  query cities {
-    cities {
+  query cities($order_by: [cities_order_by!]) {
+    cities(order_by: $order_by) {
       id
       name
       slug
@@ -98,12 +99,15 @@ export const CITIES_QUERY = gql`
   }
 `;
 
-class CitiesQuery extends Query<cities> {}
+class CitiesQuery extends Query<cities, citiesVariables> {}
 
 export const CitiesList = () => (
   <Container style={{ paddingTop: 20, paddingBottom: 40 }} id="cities-list">
     <h2 style={{ fontWeight: 700 }}>Best crypto friendly cities</h2>
-    <CitiesQuery query={CITIES_QUERY}>
+    <CitiesQuery
+      query={CITIES_QUERY}
+      variables={{ order_by: [{ nb_places: order_by.desc }] }}
+    >
       {({ loading, error, data }) => {
         if (loading) return 'Loading...';
         // TODO display error message

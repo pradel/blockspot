@@ -5,6 +5,13 @@
 // START Enums and Input Objects
 //==============================================================
 
+export enum order_by {
+  asc = 'asc',
+  asc_nulls_first = 'asc_nulls_first',
+  desc = 'desc',
+  desc_nulls_first = 'desc_nulls_first',
+}
+
 export interface InputCreatePlace {
   cityId: string;
   googleId: string;
@@ -31,6 +38,21 @@ export interface cities_bool_exp {
   updated_at?: timestamptz_comparison_exp | null;
 }
 
+export interface cities_order_by {
+  country?: countries_order_by | null;
+  country_id?: order_by | null;
+  created_at?: order_by | null;
+  google_id?: order_by | null;
+  id?: order_by | null;
+  latitude?: order_by | null;
+  longitude?: order_by | null;
+  name?: order_by | null;
+  nb_places?: order_by | null;
+  slug?: order_by | null;
+  unsplash_id?: order_by | null;
+  updated_at?: order_by | null;
+}
+
 export interface countries_bool_exp {
   _and?: (countries_bool_exp | null)[] | null;
   _not?: countries_bool_exp | null;
@@ -44,6 +66,17 @@ export interface countries_bool_exp {
   name?: varchar_comparison_exp | null;
   slug?: varchar_comparison_exp | null;
   updated_at?: timestamptz_comparison_exp | null;
+}
+
+export interface countries_order_by {
+  created_at?: order_by | null;
+  google_id?: order_by | null;
+  id?: order_by | null;
+  latitude?: order_by | null;
+  longitude?: order_by | null;
+  name?: order_by | null;
+  slug?: order_by | null;
+  updated_at?: order_by | null;
 }
 
 export interface integer_comparison_exp {

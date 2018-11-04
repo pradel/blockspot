@@ -1,8 +1,6 @@
 import getConfig from 'next/config';
 
-const {
-  publicRuntimeConfig,
-}: { publicRuntimeConfig: { [key: string]: string } } = getConfig();
+const { publicRuntimeConfig } = getConfig();
 
 export const config = {
   googleAnalyticsTrackingCode: publicRuntimeConfig.googleAnalyticsTrackingCode,

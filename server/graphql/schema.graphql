@@ -25,15 +25,52 @@ type cities {
     # filter the rows returned
     where: places_bool_exp
   ): [places!]!
+
+  # An aggregated array relationship
+  places_aggregate(
+    # limit the nuber of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [places_order_by!]
+
+    # filter the rows returned
+    where: places_bool_exp
+  ): places_aggregate!
   slug: String!
   unsplash_id: String!
   updated_at: timestamptz!
+}
+
+# aggregated selection of "cities"
+type cities_aggregate {
+  aggregate: cities_aggregate_fields
+  nodes: [cities!]!
+}
+
+# aggregate fields of "cities"
+type cities_aggregate_fields {
+  avg: cities_avg_fields
+  count: Int
+  max: cities_max_fields
+  min: cities_min_fields
+  sum: cities_sum_fields
 }
 
 # input type for inserting array relation for remote table "cities"
 input cities_arr_rel_insert_input {
   data: [cities_insert_input!]!
   on_conflict: cities_on_conflict
+}
+
+# aggregate avg on columns
+type cities_avg_fields {
+  latitude: Float
+  longitude: Float
+  nb_places: Float
 }
 
 # Boolean expression to filter rows from the table "cities". All fields are combined with a logical 'AND'.
@@ -120,6 +157,32 @@ input cities_insert_input {
   updated_at: timestamptz
 }
 
+# aggregate max on columns
+type cities_max_fields {
+  created_at: timestamptz
+  google_id: String
+  latitude: Float
+  longitude: Float
+  name: String
+  nb_places: Int
+  slug: String
+  unsplash_id: String
+  updated_at: timestamptz
+}
+
+# aggregate min on columns
+type cities_min_fields {
+  created_at: timestamptz
+  google_id: String
+  latitude: Float
+  longitude: Float
+  name: String
+  nb_places: Int
+  slug: String
+  unsplash_id: String
+  updated_at: timestamptz
+}
+
 # response of any mutation on the table "cities"
 type cities_mutation_response {
   # number of affected rows by the mutation
@@ -144,138 +207,19 @@ input cities_on_conflict {
 }
 
 # ordering options when selecting data from "cities"
-enum cities_order_by {
-  # in the ascending order of "country_id", nulls last
-  country_id_asc
-
-  # in the ascending order of "country_id", nulls first
-  country_id_asc_nulls_first
-
-  # in the descending order of "country_id", nulls last
-  country_id_desc
-
-  # in the descending order of "country_id", nulls first
-  country_id_desc_nulls_first
-
-  # in the ascending order of "created_at", nulls last
-  created_at_asc
-
-  # in the ascending order of "created_at", nulls first
-  created_at_asc_nulls_first
-
-  # in the descending order of "created_at", nulls last
-  created_at_desc
-
-  # in the descending order of "created_at", nulls first
-  created_at_desc_nulls_first
-
-  # in the ascending order of "google_id", nulls last
-  google_id_asc
-
-  # in the ascending order of "google_id", nulls first
-  google_id_asc_nulls_first
-
-  # in the descending order of "google_id", nulls last
-  google_id_desc
-
-  # in the descending order of "google_id", nulls first
-  google_id_desc_nulls_first
-
-  # in the ascending order of "id", nulls last
-  id_asc
-
-  # in the ascending order of "id", nulls first
-  id_asc_nulls_first
-
-  # in the descending order of "id", nulls last
-  id_desc
-
-  # in the descending order of "id", nulls first
-  id_desc_nulls_first
-
-  # in the ascending order of "latitude", nulls last
-  latitude_asc
-
-  # in the ascending order of "latitude", nulls first
-  latitude_asc_nulls_first
-
-  # in the descending order of "latitude", nulls last
-  latitude_desc
-
-  # in the descending order of "latitude", nulls first
-  latitude_desc_nulls_first
-
-  # in the ascending order of "longitude", nulls last
-  longitude_asc
-
-  # in the ascending order of "longitude", nulls first
-  longitude_asc_nulls_first
-
-  # in the descending order of "longitude", nulls last
-  longitude_desc
-
-  # in the descending order of "longitude", nulls first
-  longitude_desc_nulls_first
-
-  # in the ascending order of "name", nulls last
-  name_asc
-
-  # in the ascending order of "name", nulls first
-  name_asc_nulls_first
-
-  # in the descending order of "name", nulls last
-  name_desc
-
-  # in the descending order of "name", nulls first
-  name_desc_nulls_first
-
-  # in the ascending order of "nb_places", nulls last
-  nb_places_asc
-
-  # in the ascending order of "nb_places", nulls first
-  nb_places_asc_nulls_first
-
-  # in the descending order of "nb_places", nulls last
-  nb_places_desc
-
-  # in the descending order of "nb_places", nulls first
-  nb_places_desc_nulls_first
-
-  # in the ascending order of "slug", nulls last
-  slug_asc
-
-  # in the ascending order of "slug", nulls first
-  slug_asc_nulls_first
-
-  # in the descending order of "slug", nulls last
-  slug_desc
-
-  # in the descending order of "slug", nulls first
-  slug_desc_nulls_first
-
-  # in the ascending order of "unsplash_id", nulls last
-  unsplash_id_asc
-
-  # in the ascending order of "unsplash_id", nulls first
-  unsplash_id_asc_nulls_first
-
-  # in the descending order of "unsplash_id", nulls last
-  unsplash_id_desc
-
-  # in the descending order of "unsplash_id", nulls first
-  unsplash_id_desc_nulls_first
-
-  # in the ascending order of "updated_at", nulls last
-  updated_at_asc
-
-  # in the ascending order of "updated_at", nulls first
-  updated_at_asc_nulls_first
-
-  # in the descending order of "updated_at", nulls last
-  updated_at_desc
-
-  # in the descending order of "updated_at", nulls first
-  updated_at_desc_nulls_first
+input cities_order_by {
+  country: countries_order_by
+  country_id: order_by
+  created_at: order_by
+  google_id: order_by
+  id: order_by
+  latitude: order_by
+  longitude: order_by
+  name: order_by
+  nb_places: order_by
+  slug: order_by
+  unsplash_id: order_by
+  updated_at: order_by
 }
 
 # input type for updating data in table "cities"
@@ -291,6 +235,13 @@ input cities_set_input {
   slug: String
   unsplash_id: String
   updated_at: timestamptz
+}
+
+# aggregate sum on columns
+type cities_sum_fields {
+  latitude: Float
+  longitude: Float
+  nb_places: Int
 }
 
 # conflict action
@@ -318,6 +269,21 @@ type countries {
     # filter the rows returned
     where: cities_bool_exp
   ): [cities!]!
+
+  # An aggregated array relationship
+  cities_aggregate(
+    # limit the nuber of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [cities_order_by!]
+
+    # filter the rows returned
+    where: cities_bool_exp
+  ): cities_aggregate!
   created_at: timestamptz!
   google_id: String!
   id: uuid!
@@ -328,10 +294,31 @@ type countries {
   updated_at: timestamptz!
 }
 
+# aggregated selection of "countries"
+type countries_aggregate {
+  aggregate: countries_aggregate_fields
+  nodes: [countries!]!
+}
+
+# aggregate fields of "countries"
+type countries_aggregate_fields {
+  avg: countries_avg_fields
+  count: Int
+  max: countries_max_fields
+  min: countries_min_fields
+  sum: countries_sum_fields
+}
+
 # input type for inserting array relation for remote table "countries"
 input countries_arr_rel_insert_input {
   data: [countries_insert_input!]!
   on_conflict: countries_on_conflict
+}
+
+# aggregate avg on columns
+type countries_avg_fields {
+  latitude: Float
+  longitude: Float
 }
 
 # Boolean expression to filter rows from the table "countries". All fields are combined with a logical 'AND'.
@@ -396,6 +383,28 @@ input countries_insert_input {
   updated_at: timestamptz
 }
 
+# aggregate max on columns
+type countries_max_fields {
+  created_at: timestamptz
+  google_id: String
+  latitude: Float
+  longitude: Float
+  name: String
+  slug: String
+  updated_at: timestamptz
+}
+
+# aggregate min on columns
+type countries_min_fields {
+  created_at: timestamptz
+  google_id: String
+  latitude: Float
+  longitude: Float
+  name: String
+  slug: String
+  updated_at: timestamptz
+}
+
 # response of any mutation on the table "countries"
 type countries_mutation_response {
   # number of affected rows by the mutation
@@ -420,102 +429,15 @@ input countries_on_conflict {
 }
 
 # ordering options when selecting data from "countries"
-enum countries_order_by {
-  # in the ascending order of "created_at", nulls last
-  created_at_asc
-
-  # in the ascending order of "created_at", nulls first
-  created_at_asc_nulls_first
-
-  # in the descending order of "created_at", nulls last
-  created_at_desc
-
-  # in the descending order of "created_at", nulls first
-  created_at_desc_nulls_first
-
-  # in the ascending order of "google_id", nulls last
-  google_id_asc
-
-  # in the ascending order of "google_id", nulls first
-  google_id_asc_nulls_first
-
-  # in the descending order of "google_id", nulls last
-  google_id_desc
-
-  # in the descending order of "google_id", nulls first
-  google_id_desc_nulls_first
-
-  # in the ascending order of "id", nulls last
-  id_asc
-
-  # in the ascending order of "id", nulls first
-  id_asc_nulls_first
-
-  # in the descending order of "id", nulls last
-  id_desc
-
-  # in the descending order of "id", nulls first
-  id_desc_nulls_first
-
-  # in the ascending order of "latitude", nulls last
-  latitude_asc
-
-  # in the ascending order of "latitude", nulls first
-  latitude_asc_nulls_first
-
-  # in the descending order of "latitude", nulls last
-  latitude_desc
-
-  # in the descending order of "latitude", nulls first
-  latitude_desc_nulls_first
-
-  # in the ascending order of "longitude", nulls last
-  longitude_asc
-
-  # in the ascending order of "longitude", nulls first
-  longitude_asc_nulls_first
-
-  # in the descending order of "longitude", nulls last
-  longitude_desc
-
-  # in the descending order of "longitude", nulls first
-  longitude_desc_nulls_first
-
-  # in the ascending order of "name", nulls last
-  name_asc
-
-  # in the ascending order of "name", nulls first
-  name_asc_nulls_first
-
-  # in the descending order of "name", nulls last
-  name_desc
-
-  # in the descending order of "name", nulls first
-  name_desc_nulls_first
-
-  # in the ascending order of "slug", nulls last
-  slug_asc
-
-  # in the ascending order of "slug", nulls first
-  slug_asc_nulls_first
-
-  # in the descending order of "slug", nulls last
-  slug_desc
-
-  # in the descending order of "slug", nulls first
-  slug_desc_nulls_first
-
-  # in the ascending order of "updated_at", nulls last
-  updated_at_asc
-
-  # in the ascending order of "updated_at", nulls first
-  updated_at_asc_nulls_first
-
-  # in the descending order of "updated_at", nulls last
-  updated_at_desc
-
-  # in the descending order of "updated_at", nulls first
-  updated_at_desc_nulls_first
+input countries_order_by {
+  created_at: order_by
+  google_id: order_by
+  id: order_by
+  latitude: order_by
+  longitude: order_by
+  name: order_by
+  slug: order_by
+  updated_at: order_by
 }
 
 # input type for updating data in table "countries"
@@ -528,6 +450,12 @@ input countries_set_input {
   name: String
   slug: String
   updated_at: timestamptz
+}
+
+# aggregate sum on columns
+type countries_sum_fields {
+  latitude: Float
+  longitude: Float
 }
 
 input InputCreatePlace {
@@ -554,6 +482,21 @@ type Mutation {
   createPlace(input: InputCreatePlace!): places!
 }
 
+# column ordering options
+enum order_by {
+  # in the ascending order, nulls last
+  asc
+
+  # in the ascending order, nulls first
+  asc_nulls_first
+
+  # in the descending order, nulls last
+  desc
+
+  # in the ascending order, nulls first
+  desc_nulls_first
+}
+
 # columns and relationships of "places"
 type places {
   address: String!
@@ -572,10 +515,31 @@ type places {
   updated_at: timestamptz!
 }
 
+# aggregated selection of "places"
+type places_aggregate {
+  aggregate: places_aggregate_fields
+  nodes: [places!]!
+}
+
+# aggregate fields of "places"
+type places_aggregate_fields {
+  avg: places_avg_fields
+  count: Int
+  max: places_max_fields
+  min: places_min_fields
+  sum: places_sum_fields
+}
+
 # input type for inserting array relation for remote table "places"
 input places_arr_rel_insert_input {
   data: [places_insert_input!]!
   on_conflict: places_on_conflict
+}
+
+# aggregate avg on columns
+type places_avg_fields {
+  latitude: Float
+  longitude: Float
 }
 
 # Boolean expression to filter rows from the table "places". All fields are combined with a logical 'AND'.
@@ -655,6 +619,32 @@ input places_insert_input {
   updated_at: timestamptz
 }
 
+# aggregate max on columns
+type places_max_fields {
+  address: String
+  category: String
+  created_at: timestamptz
+  google_id: String
+  latitude: Float
+  longitude: Float
+  name: String
+  slug: String
+  updated_at: timestamptz
+}
+
+# aggregate min on columns
+type places_min_fields {
+  address: String
+  category: String
+  created_at: timestamptz
+  google_id: String
+  latitude: Float
+  longitude: Float
+  name: String
+  slug: String
+  updated_at: timestamptz
+}
+
 # response of any mutation on the table "places"
 type places_mutation_response {
   # number of affected rows by the mutation
@@ -679,138 +669,19 @@ input places_on_conflict {
 }
 
 # ordering options when selecting data from "places"
-enum places_order_by {
-  # in the ascending order of "address", nulls last
-  address_asc
-
-  # in the ascending order of "address", nulls first
-  address_asc_nulls_first
-
-  # in the descending order of "address", nulls last
-  address_desc
-
-  # in the descending order of "address", nulls first
-  address_desc_nulls_first
-
-  # in the ascending order of "category", nulls last
-  category_asc
-
-  # in the ascending order of "category", nulls first
-  category_asc_nulls_first
-
-  # in the descending order of "category", nulls last
-  category_desc
-
-  # in the descending order of "category", nulls first
-  category_desc_nulls_first
-
-  # in the ascending order of "city_id", nulls last
-  city_id_asc
-
-  # in the ascending order of "city_id", nulls first
-  city_id_asc_nulls_first
-
-  # in the descending order of "city_id", nulls last
-  city_id_desc
-
-  # in the descending order of "city_id", nulls first
-  city_id_desc_nulls_first
-
-  # in the ascending order of "created_at", nulls last
-  created_at_asc
-
-  # in the ascending order of "created_at", nulls first
-  created_at_asc_nulls_first
-
-  # in the descending order of "created_at", nulls last
-  created_at_desc
-
-  # in the descending order of "created_at", nulls first
-  created_at_desc_nulls_first
-
-  # in the ascending order of "google_id", nulls last
-  google_id_asc
-
-  # in the ascending order of "google_id", nulls first
-  google_id_asc_nulls_first
-
-  # in the descending order of "google_id", nulls last
-  google_id_desc
-
-  # in the descending order of "google_id", nulls first
-  google_id_desc_nulls_first
-
-  # in the ascending order of "id", nulls last
-  id_asc
-
-  # in the ascending order of "id", nulls first
-  id_asc_nulls_first
-
-  # in the descending order of "id", nulls last
-  id_desc
-
-  # in the descending order of "id", nulls first
-  id_desc_nulls_first
-
-  # in the ascending order of "latitude", nulls last
-  latitude_asc
-
-  # in the ascending order of "latitude", nulls first
-  latitude_asc_nulls_first
-
-  # in the descending order of "latitude", nulls last
-  latitude_desc
-
-  # in the descending order of "latitude", nulls first
-  latitude_desc_nulls_first
-
-  # in the ascending order of "longitude", nulls last
-  longitude_asc
-
-  # in the ascending order of "longitude", nulls first
-  longitude_asc_nulls_first
-
-  # in the descending order of "longitude", nulls last
-  longitude_desc
-
-  # in the descending order of "longitude", nulls first
-  longitude_desc_nulls_first
-
-  # in the ascending order of "name", nulls last
-  name_asc
-
-  # in the ascending order of "name", nulls first
-  name_asc_nulls_first
-
-  # in the descending order of "name", nulls last
-  name_desc
-
-  # in the descending order of "name", nulls first
-  name_desc_nulls_first
-
-  # in the ascending order of "slug", nulls last
-  slug_asc
-
-  # in the ascending order of "slug", nulls first
-  slug_asc_nulls_first
-
-  # in the descending order of "slug", nulls last
-  slug_desc
-
-  # in the descending order of "slug", nulls first
-  slug_desc_nulls_first
-
-  # in the ascending order of "updated_at", nulls last
-  updated_at_asc
-
-  # in the ascending order of "updated_at", nulls first
-  updated_at_asc_nulls_first
-
-  # in the descending order of "updated_at", nulls last
-  updated_at_desc
-
-  # in the descending order of "updated_at", nulls first
-  updated_at_desc_nulls_first
+input places_order_by {
+  address: order_by
+  category: order_by
+  city: cities_order_by
+  city_id: order_by
+  created_at: order_by
+  google_id: order_by
+  id: order_by
+  latitude: order_by
+  longitude: order_by
+  name: order_by
+  slug: order_by
+  updated_at: order_by
 }
 
 # input type for updating data in table "places"
@@ -828,6 +699,12 @@ input places_set_input {
   updated_at: timestamptz
 }
 
+# aggregate sum on columns
+type places_sum_fields {
+  latitude: Float
+  longitude: Float
+}
+
 type Query {
   # fetch data from the table: "cities"
   cities(
@@ -843,6 +720,21 @@ type Query {
     # filter the rows returned
     where: cities_bool_exp
   ): [cities!]!
+
+  # fetch aggregated fields from the table: "cities"
+  cities_aggregate(
+    # limit the nuber of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [cities_order_by!]
+
+    # filter the rows returned
+    where: cities_bool_exp
+  ): cities_aggregate!
 
   # fetch data from the table: "cities" using primary key columns
   cities_by_pk(id: uuid!): cities
@@ -862,6 +754,21 @@ type Query {
     where: countries_bool_exp
   ): [countries!]!
 
+  # fetch aggregated fields from the table: "countries"
+  countries_aggregate(
+    # limit the nuber of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [countries_order_by!]
+
+    # filter the rows returned
+    where: countries_bool_exp
+  ): countries_aggregate!
+
   # fetch data from the table: "countries" using primary key columns
   countries_by_pk(id: uuid!): countries
 
@@ -879,6 +786,21 @@ type Query {
     # filter the rows returned
     where: places_bool_exp
   ): [places!]!
+
+  # fetch aggregated fields from the table: "places"
+  places_aggregate(
+    # limit the nuber of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [places_order_by!]
+
+    # filter the rows returned
+    where: places_bool_exp
+  ): places_aggregate!
 
   # fetch data from the table: "places" using primary key columns
   places_by_pk(id: uuid!): places

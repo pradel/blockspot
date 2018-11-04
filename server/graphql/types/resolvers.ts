@@ -1,19 +1,14 @@
 /* tslint:disable */
 import { GraphQLResolveInfo } from 'graphql';
 
-export type Resolver<Result, Parent = any, Context = any, Args = any> = (
+export type Resolver<Result, Parent = any, Context = any, Args = never> = (
   parent: Parent,
   args: Args,
   context: Context,
   info: GraphQLResolveInfo
 ) => Promise<Result> | Result;
 
-export type SubscriptionResolver<
-  Result,
-  Parent = any,
-  Context = any,
-  Args = any
-> = {
+export interface ISubscriptionResolverObject<Result, Parent, Context, Args> {
   subscribe<R = Result, P = Parent>(
     parent: P,
     args: Args,
@@ -26,63 +21,342 @@ export type SubscriptionResolver<
     context: Context,
     info: GraphQLResolveInfo
   ): R | Result | Promise<R | Result>;
-};
+}
+
+export type SubscriptionResolver<
+  Result,
+  Parent = any,
+  Context = any,
+  Args = never
+> =
+  | ((
+      ...args: any[]
+    ) => ISubscriptionResolverObject<Result, Parent, Context, Args>)
+  | ISubscriptionResolverObject<Result, Parent, Context, Args>;
+
+// ====================================================
+// START: Typescript template
+// ====================================================
+
+// ====================================================
+// Scalars
+// ====================================================
 
 export type Timestamptz = any;
 
 export type Uuid = any;
 
+// ====================================================
+// Types
+// ====================================================
+
 export interface Query {
-  cities: Cities[] /** fetch data from the table: "cities" */;
-  cities_by_pk?: Cities | null /** fetch data from the table: "cities" using primary key columns */;
-  countries: Countries[] /** fetch data from the table: "countries" */;
-  countries_by_pk?: Countries | null /** fetch data from the table: "countries" using primary key columns */;
-  places: Places[] /** fetch data from the table: "places" */;
-  places_by_pk?: Places | null /** fetch data from the table: "places" using primary key columns */;
+  /** fetch data from the table: "cities" */
+  cities: Cities[];
+  /** fetch aggregated fields from the table: "cities" */
+  cities_aggregate: CitiesAggregate;
+  /** fetch data from the table: "cities" using primary key columns */
+  cities_by_pk?: Cities | null;
+  /** fetch data from the table: "countries" */
+  countries: Countries[];
+  /** fetch aggregated fields from the table: "countries" */
+  countries_aggregate: CountriesAggregate;
+  /** fetch data from the table: "countries" using primary key columns */
+  countries_by_pk?: Countries | null;
+  /** fetch data from the table: "places" */
+  places: Places[];
+  /** fetch aggregated fields from the table: "places" */
+  places_aggregate: PlacesAggregate;
+  /** fetch data from the table: "places" using primary key columns */
+  places_by_pk?: Places | null;
+
   _?: boolean | null;
 }
 /** columns and relationships of "cities" */
 export interface Cities {
-  country: Countries /** An object relationship */;
+  /** An object relationship */
+  country: Countries;
+
   country_id: Uuid;
+
   created_at: Timestamptz;
+
   google_id: string;
+
   id: Uuid;
+
   latitude: number;
+
   longitude: number;
+
   name: string;
+
   nb_places: number;
-  places: Places[] /** An array relationship */;
+  /** An array relationship */
+  places: Places[];
+  /** An aggregated array relationship */
+  places_aggregate: PlacesAggregate;
+
   slug: string;
+
   unsplash_id: string;
+
   updated_at: Timestamptz;
 }
 /** columns and relationships of "countries" */
 export interface Countries {
-  cities: Cities[] /** An array relationship */;
+  /** An array relationship */
+  cities: Cities[];
+  /** An aggregated array relationship */
+  cities_aggregate: CitiesAggregate;
+
   created_at: Timestamptz;
+
   google_id: string;
+
   id: Uuid;
+
   latitude: number;
+
   longitude: number;
+
   name: string;
+
   slug: string;
+
   updated_at: Timestamptz;
+}
+/** aggregated selection of "cities" */
+export interface CitiesAggregate {
+  aggregate?: CitiesAggregateFields | null;
+
+  nodes: Cities[];
+}
+/** aggregate fields of "cities" */
+export interface CitiesAggregateFields {
+  avg?: CitiesAvgFields | null;
+
+  count?: number | null;
+
+  max?: CitiesMaxFields | null;
+
+  min?: CitiesMinFields | null;
+
+  sum?: CitiesSumFields | null;
+}
+/** aggregate avg on columns */
+export interface CitiesAvgFields {
+  latitude?: number | null;
+
+  longitude?: number | null;
+
+  nb_places?: number | null;
+}
+/** aggregate max on columns */
+export interface CitiesMaxFields {
+  created_at?: Timestamptz | null;
+
+  google_id?: string | null;
+
+  latitude?: number | null;
+
+  longitude?: number | null;
+
+  name?: string | null;
+
+  nb_places?: number | null;
+
+  slug?: string | null;
+
+  unsplash_id?: string | null;
+
+  updated_at?: Timestamptz | null;
+}
+/** aggregate min on columns */
+export interface CitiesMinFields {
+  created_at?: Timestamptz | null;
+
+  google_id?: string | null;
+
+  latitude?: number | null;
+
+  longitude?: number | null;
+
+  name?: string | null;
+
+  nb_places?: number | null;
+
+  slug?: string | null;
+
+  unsplash_id?: string | null;
+
+  updated_at?: Timestamptz | null;
+}
+/** aggregate sum on columns */
+export interface CitiesSumFields {
+  latitude?: number | null;
+
+  longitude?: number | null;
+
+  nb_places?: number | null;
 }
 /** columns and relationships of "places" */
 export interface Places {
   address: string;
+
   category: string;
-  city: Cities /** An object relationship */;
+  /** An object relationship */
+  city: Cities;
+
   city_id: Uuid;
+
   created_at: Timestamptz;
+
   google_id: string;
+
   id: Uuid;
+
   latitude: number;
+
   longitude: number;
+
   name: string;
+
   slug: string;
+
   updated_at: Timestamptz;
+}
+/** aggregated selection of "places" */
+export interface PlacesAggregate {
+  aggregate?: PlacesAggregateFields | null;
+
+  nodes: Places[];
+}
+/** aggregate fields of "places" */
+export interface PlacesAggregateFields {
+  avg?: PlacesAvgFields | null;
+
+  count?: number | null;
+
+  max?: PlacesMaxFields | null;
+
+  min?: PlacesMinFields | null;
+
+  sum?: PlacesSumFields | null;
+}
+/** aggregate avg on columns */
+export interface PlacesAvgFields {
+  latitude?: number | null;
+
+  longitude?: number | null;
+}
+/** aggregate max on columns */
+export interface PlacesMaxFields {
+  address?: string | null;
+
+  category?: string | null;
+
+  created_at?: Timestamptz | null;
+
+  google_id?: string | null;
+
+  latitude?: number | null;
+
+  longitude?: number | null;
+
+  name?: string | null;
+
+  slug?: string | null;
+
+  updated_at?: Timestamptz | null;
+}
+/** aggregate min on columns */
+export interface PlacesMinFields {
+  address?: string | null;
+
+  category?: string | null;
+
+  created_at?: Timestamptz | null;
+
+  google_id?: string | null;
+
+  latitude?: number | null;
+
+  longitude?: number | null;
+
+  name?: string | null;
+
+  slug?: string | null;
+
+  updated_at?: Timestamptz | null;
+}
+/** aggregate sum on columns */
+export interface PlacesSumFields {
+  latitude?: number | null;
+
+  longitude?: number | null;
+}
+/** aggregated selection of "countries" */
+export interface CountriesAggregate {
+  aggregate?: CountriesAggregateFields | null;
+
+  nodes: Countries[];
+}
+/** aggregate fields of "countries" */
+export interface CountriesAggregateFields {
+  avg?: CountriesAvgFields | null;
+
+  count?: number | null;
+
+  max?: CountriesMaxFields | null;
+
+  min?: CountriesMinFields | null;
+
+  sum?: CountriesSumFields | null;
+}
+/** aggregate avg on columns */
+export interface CountriesAvgFields {
+  latitude?: number | null;
+
+  longitude?: number | null;
+}
+/** aggregate max on columns */
+export interface CountriesMaxFields {
+  created_at?: Timestamptz | null;
+
+  google_id?: string | null;
+
+  latitude?: number | null;
+
+  longitude?: number | null;
+
+  name?: string | null;
+
+  slug?: string | null;
+
+  updated_at?: Timestamptz | null;
+}
+/** aggregate min on columns */
+export interface CountriesMinFields {
+  created_at?: Timestamptz | null;
+
+  google_id?: string | null;
+
+  latitude?: number | null;
+
+  longitude?: number | null;
+
+  name?: string | null;
+
+  slug?: string | null;
+
+  updated_at?: Timestamptz | null;
+}
+/** aggregate sum on columns */
+export interface CountriesSumFields {
+  latitude?: number | null;
+
+  longitude?: number | null;
 }
 
 export interface Mutation {
@@ -90,223 +364,437 @@ export interface Mutation {
 }
 /** response of any mutation on the table "cities" */
 export interface CitiesMutationResponse {
-  affected_rows: number /** number of affected rows by the mutation */;
-  returning: Cities[] /** data of the affected rows by the mutation */;
+  /** number of affected rows by the mutation */
+  affected_rows: number;
+  /** data of the affected rows by the mutation */
+  returning: Cities[];
 }
 /** response of any mutation on the table "countries" */
 export interface CountriesMutationResponse {
-  affected_rows: number /** number of affected rows by the mutation */;
-  returning: Countries[] /** data of the affected rows by the mutation */;
+  /** number of affected rows by the mutation */
+  affected_rows: number;
+  /** data of the affected rows by the mutation */
+  returning: Countries[];
 }
 /** response of any mutation on the table "places" */
 export interface PlacesMutationResponse {
-  affected_rows: number /** number of affected rows by the mutation */;
-  returning: Places[] /** data of the affected rows by the mutation */;
+  /** number of affected rows by the mutation */
+  affected_rows: number;
+  /** data of the affected rows by the mutation */
+  returning: Places[];
+}
+
+// ====================================================
+// InputTypes
+// ====================================================
+
+/** ordering options when selecting data from "cities" */
+export interface CitiesOrderBy {
+  country?: CountriesOrderBy | null;
+
+  country_id?: OrderBy | null;
+
+  created_at?: OrderBy | null;
+
+  google_id?: OrderBy | null;
+
+  id?: OrderBy | null;
+
+  latitude?: OrderBy | null;
+
+  longitude?: OrderBy | null;
+
+  name?: OrderBy | null;
+
+  nb_places?: OrderBy | null;
+
+  slug?: OrderBy | null;
+
+  unsplash_id?: OrderBy | null;
+
+  updated_at?: OrderBy | null;
+}
+/** ordering options when selecting data from "countries" */
+export interface CountriesOrderBy {
+  created_at?: OrderBy | null;
+
+  google_id?: OrderBy | null;
+
+  id?: OrderBy | null;
+
+  latitude?: OrderBy | null;
+
+  longitude?: OrderBy | null;
+
+  name?: OrderBy | null;
+
+  slug?: OrderBy | null;
+
+  updated_at?: OrderBy | null;
 }
 /** Boolean expression to filter rows from the table "cities". All fields are combined with a logical 'AND'. */
 export interface CitiesBoolExp {
   _and?: (CitiesBoolExp | null)[] | null;
+
   _not?: CitiesBoolExp | null;
+
   _or?: (CitiesBoolExp | null)[] | null;
+
   country?: CountriesBoolExp | null;
+
   country_id?: UuidComparisonExp | null;
+
   created_at?: TimestamptzComparisonExp | null;
+
   google_id?: VarcharComparisonExp | null;
+
   id?: UuidComparisonExp | null;
+
   latitude?: RealComparisonExp | null;
+
   longitude?: RealComparisonExp | null;
+
   name?: VarcharComparisonExp | null;
+
   nb_places?: IntegerComparisonExp | null;
+
   places?: PlacesBoolExp | null;
+
   slug?: VarcharComparisonExp | null;
+
   unsplash_id?: VarcharComparisonExp | null;
+
   updated_at?: TimestamptzComparisonExp | null;
 }
 /** Boolean expression to filter rows from the table "countries". All fields are combined with a logical 'AND'. */
 export interface CountriesBoolExp {
   _and?: (CountriesBoolExp | null)[] | null;
+
   _not?: CountriesBoolExp | null;
+
   _or?: (CountriesBoolExp | null)[] | null;
+
   cities?: CitiesBoolExp | null;
+
   created_at?: TimestamptzComparisonExp | null;
+
   google_id?: VarcharComparisonExp | null;
+
   id?: UuidComparisonExp | null;
+
   latitude?: RealComparisonExp | null;
+
   longitude?: RealComparisonExp | null;
+
   name?: VarcharComparisonExp | null;
+
   slug?: VarcharComparisonExp | null;
+
   updated_at?: TimestamptzComparisonExp | null;
 }
 /** expression to compare columns of type timestamptz. All fields are combined with logical 'AND'. */
 export interface TimestamptzComparisonExp {
   _eq?: Timestamptz | null;
+
   _gt?: Timestamptz | null;
+
   _gte?: Timestamptz | null;
+
   _in?: (Timestamptz | null)[] | null;
+
   _is_null?: boolean | null;
+
   _lt?: Timestamptz | null;
+
   _lte?: Timestamptz | null;
+
   _neq?: Timestamptz | null;
+
   _nin?: (Timestamptz | null)[] | null;
 }
 /** expression to compare columns of type varchar. All fields are combined with logical 'AND'. */
 export interface VarcharComparisonExp {
   _eq?: string | null;
+
   _gt?: string | null;
+
   _gte?: string | null;
+
   _ilike?: string | null;
+
   _in?: (string | null)[] | null;
+
   _is_null?: boolean | null;
+
   _like?: string | null;
+
   _lt?: string | null;
+
   _lte?: string | null;
+
   _neq?: string | null;
+
   _nilike?: string | null;
+
   _nin?: (string | null)[] | null;
+
   _nlike?: string | null;
+
   _nsimilar?: string | null;
+
   _similar?: string | null;
 }
 /** expression to compare columns of type uuid. All fields are combined with logical 'AND'. */
 export interface UuidComparisonExp {
   _eq?: Uuid | null;
+
   _gt?: Uuid | null;
+
   _gte?: Uuid | null;
+
   _in?: (Uuid | null)[] | null;
+
   _is_null?: boolean | null;
+
   _lt?: Uuid | null;
+
   _lte?: Uuid | null;
+
   _neq?: Uuid | null;
+
   _nin?: (Uuid | null)[] | null;
 }
 /** expression to compare columns of type real. All fields are combined with logical 'AND'. */
 export interface RealComparisonExp {
   _eq?: number | null;
+
   _gt?: number | null;
+
   _gte?: number | null;
+
   _in?: (number | null)[] | null;
+
   _is_null?: boolean | null;
+
   _lt?: number | null;
+
   _lte?: number | null;
+
   _neq?: number | null;
+
   _nin?: (number | null)[] | null;
 }
 /** expression to compare columns of type integer. All fields are combined with logical 'AND'. */
 export interface IntegerComparisonExp {
   _eq?: number | null;
+
   _gt?: number | null;
+
   _gte?: number | null;
+
   _in?: (number | null)[] | null;
+
   _is_null?: boolean | null;
+
   _lt?: number | null;
+
   _lte?: number | null;
+
   _neq?: number | null;
+
   _nin?: (number | null)[] | null;
 }
 /** Boolean expression to filter rows from the table "places". All fields are combined with a logical 'AND'. */
 export interface PlacesBoolExp {
   _and?: (PlacesBoolExp | null)[] | null;
+
   _not?: PlacesBoolExp | null;
+
   _or?: (PlacesBoolExp | null)[] | null;
+
   address?: VarcharComparisonExp | null;
+
   category?: VarcharComparisonExp | null;
+
   city?: CitiesBoolExp | null;
+
   city_id?: UuidComparisonExp | null;
+
   created_at?: TimestamptzComparisonExp | null;
+
   google_id?: VarcharComparisonExp | null;
+
   id?: UuidComparisonExp | null;
+
   latitude?: RealComparisonExp | null;
+
   longitude?: RealComparisonExp | null;
+
   name?: VarcharComparisonExp | null;
+
   slug?: VarcharComparisonExp | null;
+
   updated_at?: TimestamptzComparisonExp | null;
+}
+/** ordering options when selecting data from "places" */
+export interface PlacesOrderBy {
+  address?: OrderBy | null;
+
+  category?: OrderBy | null;
+
+  city?: CitiesOrderBy | null;
+
+  city_id?: OrderBy | null;
+
+  created_at?: OrderBy | null;
+
+  google_id?: OrderBy | null;
+
+  id?: OrderBy | null;
+
+  latitude?: OrderBy | null;
+
+  longitude?: OrderBy | null;
+
+  name?: OrderBy | null;
+
+  slug?: OrderBy | null;
+
+  updated_at?: OrderBy | null;
 }
 
 export interface InputCreatePlace {
   cityId: string;
+
   googleId: string;
+
   recaptcha: string;
+
   category: string;
 }
 /** input type for inserting data into table "cities" */
 export interface CitiesInsertInput {
   country?: CountriesObjRelInsertInput | null;
+
   country_id?: Uuid | null;
+
   created_at?: Timestamptz | null;
+
   google_id?: string | null;
+
   id?: Uuid | null;
+
   latitude?: number | null;
+
   longitude?: number | null;
+
   name?: string | null;
+
   nb_places?: number | null;
+
   places?: PlacesArrRelInsertInput | null;
+
   slug?: string | null;
+
   unsplash_id?: string | null;
+
   updated_at?: Timestamptz | null;
 }
 /** input type for inserting object relation for remote table "countries" */
 export interface CountriesObjRelInsertInput {
   data: CountriesInsertInput;
+
   on_conflict?: CountriesOnConflict | null;
 }
 /** input type for inserting data into table "countries" */
 export interface CountriesInsertInput {
   cities?: CitiesArrRelInsertInput | null;
+
   created_at?: Timestamptz | null;
+
   google_id?: string | null;
+
   id?: Uuid | null;
+
   latitude?: number | null;
+
   longitude?: number | null;
+
   name?: string | null;
+
   slug?: string | null;
+
   updated_at?: Timestamptz | null;
 }
 /** input type for inserting array relation for remote table "cities" */
 export interface CitiesArrRelInsertInput {
   data: CitiesInsertInput[];
+
   on_conflict?: CitiesOnConflict | null;
 }
 /** on conflict condition type for table "cities" */
 export interface CitiesOnConflict {
-  action?: ConflictAction | null /** action when conflict occurs (deprecated) */;
+  /** action when conflict occurs (deprecated) */
+  action?: ConflictAction | null;
+
   constraint: CitiesConstraint;
+
   update_columns?: CitiesColumn[] | null;
 }
 /** on conflict condition type for table "countries" */
 export interface CountriesOnConflict {
-  action?: ConflictAction | null /** action when conflict occurs (deprecated) */;
+  /** action when conflict occurs (deprecated) */
+  action?: ConflictAction | null;
+
   constraint: CountriesConstraint;
+
   update_columns?: CountriesColumn[] | null;
 }
 /** input type for inserting array relation for remote table "places" */
 export interface PlacesArrRelInsertInput {
   data: PlacesInsertInput[];
+
   on_conflict?: PlacesOnConflict | null;
 }
 /** input type for inserting data into table "places" */
 export interface PlacesInsertInput {
   address?: string | null;
+
   category?: string | null;
+
   city?: CitiesObjRelInsertInput | null;
+
   city_id?: Uuid | null;
+
   created_at?: Timestamptz | null;
+
   google_id?: string | null;
+
   id?: Uuid | null;
+
   latitude?: number | null;
+
   longitude?: number | null;
+
   name?: string | null;
+
   slug?: string | null;
+
   updated_at?: Timestamptz | null;
 }
 /** input type for inserting object relation for remote table "cities" */
 export interface CitiesObjRelInsertInput {
   data: CitiesInsertInput;
+
   on_conflict?: CitiesOnConflict | null;
 }
 /** on conflict condition type for table "places" */
 export interface PlacesOnConflict {
-  action?: ConflictAction | null /** action when conflict occurs (deprecated) */;
+  /** action when conflict occurs (deprecated) */
+  action?: ConflictAction | null;
+
   constraint: PlacesConstraint;
+
   update_columns?: PlacesColumn[] | null;
 }
 /** input type for incrementing integer columne in table "cities" */
@@ -316,224 +804,209 @@ export interface CitiesIncInput {
 /** input type for updating data in table "cities" */
 export interface CitiesSetInput {
   country_id?: Uuid | null;
+
   created_at?: Timestamptz | null;
+
   google_id?: string | null;
+
   id?: Uuid | null;
+
   latitude?: number | null;
+
   longitude?: number | null;
+
   name?: string | null;
+
   nb_places?: number | null;
+
   slug?: string | null;
+
   unsplash_id?: string | null;
+
   updated_at?: Timestamptz | null;
 }
 /** input type for updating data in table "countries" */
 export interface CountriesSetInput {
   created_at?: Timestamptz | null;
+
   google_id?: string | null;
+
   id?: Uuid | null;
+
   latitude?: number | null;
+
   longitude?: number | null;
+
   name?: string | null;
+
   slug?: string | null;
+
   updated_at?: Timestamptz | null;
 }
 /** input type for updating data in table "places" */
 export interface PlacesSetInput {
   address?: string | null;
+
   category?: string | null;
+
   city_id?: Uuid | null;
+
   created_at?: Timestamptz | null;
+
   google_id?: string | null;
+
   id?: Uuid | null;
+
   latitude?: number | null;
+
   longitude?: number | null;
+
   name?: string | null;
+
   slug?: string | null;
+
   updated_at?: Timestamptz | null;
 }
 /** input type for inserting array relation for remote table "countries" */
 export interface CountriesArrRelInsertInput {
   data: CountriesInsertInput[];
+
   on_conflict?: CountriesOnConflict | null;
 }
 /** input type for inserting object relation for remote table "places" */
 export interface PlacesObjRelInsertInput {
   data: PlacesInsertInput;
+
   on_conflict?: PlacesOnConflict | null;
 }
+
+// ====================================================
+// Arguments
+// ====================================================
+
 export interface CitiesQueryArgs {
-  limit?: number | null /** limit the nuber of rows returned */;
-  offset?: number | null /** skip the first n rows. Use only with order_by */;
-  order_by?: CitiesOrderBy[] | null /** sort the rows by one or more columns */;
-  where?: CitiesBoolExp | null /** filter the rows returned */;
+  /** limit the nuber of rows returned */
+  limit?: number | null;
+  /** skip the first n rows. Use only with order_by */
+  offset?: number | null;
+  /** sort the rows by one or more columns */
+  order_by?: CitiesOrderBy[] | null;
+  /** filter the rows returned */
+  where?: CitiesBoolExp | null;
+}
+export interface CitiesAggregateQueryArgs {
+  /** limit the nuber of rows returned */
+  limit?: number | null;
+  /** skip the first n rows. Use only with order_by */
+  offset?: number | null;
+  /** sort the rows by one or more columns */
+  order_by?: CitiesOrderBy[] | null;
+  /** filter the rows returned */
+  where?: CitiesBoolExp | null;
 }
 export interface CitiesByPkQueryArgs {
   id: Uuid;
 }
 export interface CountriesQueryArgs {
-  limit?: number | null /** limit the nuber of rows returned */;
-  offset?: number | null /** skip the first n rows. Use only with order_by */;
-  order_by?:
-    | CountriesOrderBy[]
-    | null /** sort the rows by one or more columns */;
-  where?: CountriesBoolExp | null /** filter the rows returned */;
+  /** limit the nuber of rows returned */
+  limit?: number | null;
+  /** skip the first n rows. Use only with order_by */
+  offset?: number | null;
+  /** sort the rows by one or more columns */
+  order_by?: CountriesOrderBy[] | null;
+  /** filter the rows returned */
+  where?: CountriesBoolExp | null;
+}
+export interface CountriesAggregateQueryArgs {
+  /** limit the nuber of rows returned */
+  limit?: number | null;
+  /** skip the first n rows. Use only with order_by */
+  offset?: number | null;
+  /** sort the rows by one or more columns */
+  order_by?: CountriesOrderBy[] | null;
+  /** filter the rows returned */
+  where?: CountriesBoolExp | null;
 }
 export interface CountriesByPkQueryArgs {
   id: Uuid;
 }
 export interface PlacesQueryArgs {
-  limit?: number | null /** limit the nuber of rows returned */;
-  offset?: number | null /** skip the first n rows. Use only with order_by */;
-  order_by?: PlacesOrderBy[] | null /** sort the rows by one or more columns */;
-  where?: PlacesBoolExp | null /** filter the rows returned */;
+  /** limit the nuber of rows returned */
+  limit?: number | null;
+  /** skip the first n rows. Use only with order_by */
+  offset?: number | null;
+  /** sort the rows by one or more columns */
+  order_by?: PlacesOrderBy[] | null;
+  /** filter the rows returned */
+  where?: PlacesBoolExp | null;
+}
+export interface PlacesAggregateQueryArgs {
+  /** limit the nuber of rows returned */
+  limit?: number | null;
+  /** skip the first n rows. Use only with order_by */
+  offset?: number | null;
+  /** sort the rows by one or more columns */
+  order_by?: PlacesOrderBy[] | null;
+  /** filter the rows returned */
+  where?: PlacesBoolExp | null;
 }
 export interface PlacesByPkQueryArgs {
   id: Uuid;
 }
 export interface PlacesCitiesArgs {
-  limit?: number | null /** limit the nuber of rows returned */;
-  offset?: number | null /** skip the first n rows. Use only with order_by */;
-  order_by?: PlacesOrderBy[] | null /** sort the rows by one or more columns */;
-  where?: PlacesBoolExp | null /** filter the rows returned */;
+  /** limit the nuber of rows returned */
+  limit?: number | null;
+  /** skip the first n rows. Use only with order_by */
+  offset?: number | null;
+  /** sort the rows by one or more columns */
+  order_by?: PlacesOrderBy[] | null;
+  /** filter the rows returned */
+  where?: PlacesBoolExp | null;
+}
+export interface PlacesAggregateCitiesArgs {
+  /** limit the nuber of rows returned */
+  limit?: number | null;
+  /** skip the first n rows. Use only with order_by */
+  offset?: number | null;
+  /** sort the rows by one or more columns */
+  order_by?: PlacesOrderBy[] | null;
+  /** filter the rows returned */
+  where?: PlacesBoolExp | null;
 }
 export interface CitiesCountriesArgs {
-  limit?: number | null /** limit the nuber of rows returned */;
-  offset?: number | null /** skip the first n rows. Use only with order_by */;
-  order_by?: CitiesOrderBy[] | null /** sort the rows by one or more columns */;
-  where?: CitiesBoolExp | null /** filter the rows returned */;
+  /** limit the nuber of rows returned */
+  limit?: number | null;
+  /** skip the first n rows. Use only with order_by */
+  offset?: number | null;
+  /** sort the rows by one or more columns */
+  order_by?: CitiesOrderBy[] | null;
+  /** filter the rows returned */
+  where?: CitiesBoolExp | null;
+}
+export interface CitiesAggregateCountriesArgs {
+  /** limit the nuber of rows returned */
+  limit?: number | null;
+  /** skip the first n rows. Use only with order_by */
+  offset?: number | null;
+  /** sort the rows by one or more columns */
+  order_by?: CitiesOrderBy[] | null;
+  /** filter the rows returned */
+  where?: CitiesBoolExp | null;
 }
 export interface CreatePlaceMutationArgs {
   input: InputCreatePlace;
 }
-/** ordering options when selecting data from "cities" */
-export enum CitiesOrderBy {
-  country_id_asc = 'country_id_asc',
-  country_id_asc_nulls_first = 'country_id_asc_nulls_first',
-  country_id_desc = 'country_id_desc',
-  country_id_desc_nulls_first = 'country_id_desc_nulls_first',
-  created_at_asc = 'created_at_asc',
-  created_at_asc_nulls_first = 'created_at_asc_nulls_first',
-  created_at_desc = 'created_at_desc',
-  created_at_desc_nulls_first = 'created_at_desc_nulls_first',
-  google_id_asc = 'google_id_asc',
-  google_id_asc_nulls_first = 'google_id_asc_nulls_first',
-  google_id_desc = 'google_id_desc',
-  google_id_desc_nulls_first = 'google_id_desc_nulls_first',
-  id_asc = 'id_asc',
-  id_asc_nulls_first = 'id_asc_nulls_first',
-  id_desc = 'id_desc',
-  id_desc_nulls_first = 'id_desc_nulls_first',
-  latitude_asc = 'latitude_asc',
-  latitude_asc_nulls_first = 'latitude_asc_nulls_first',
-  latitude_desc = 'latitude_desc',
-  latitude_desc_nulls_first = 'latitude_desc_nulls_first',
-  longitude_asc = 'longitude_asc',
-  longitude_asc_nulls_first = 'longitude_asc_nulls_first',
-  longitude_desc = 'longitude_desc',
-  longitude_desc_nulls_first = 'longitude_desc_nulls_first',
-  name_asc = 'name_asc',
-  name_asc_nulls_first = 'name_asc_nulls_first',
-  name_desc = 'name_desc',
-  name_desc_nulls_first = 'name_desc_nulls_first',
-  nb_places_asc = 'nb_places_asc',
-  nb_places_asc_nulls_first = 'nb_places_asc_nulls_first',
-  nb_places_desc = 'nb_places_desc',
-  nb_places_desc_nulls_first = 'nb_places_desc_nulls_first',
-  slug_asc = 'slug_asc',
-  slug_asc_nulls_first = 'slug_asc_nulls_first',
-  slug_desc = 'slug_desc',
-  slug_desc_nulls_first = 'slug_desc_nulls_first',
-  unsplash_id_asc = 'unsplash_id_asc',
-  unsplash_id_asc_nulls_first = 'unsplash_id_asc_nulls_first',
-  unsplash_id_desc = 'unsplash_id_desc',
-  unsplash_id_desc_nulls_first = 'unsplash_id_desc_nulls_first',
-  updated_at_asc = 'updated_at_asc',
-  updated_at_asc_nulls_first = 'updated_at_asc_nulls_first',
-  updated_at_desc = 'updated_at_desc',
-  updated_at_desc_nulls_first = 'updated_at_desc_nulls_first',
-}
-/** ordering options when selecting data from "places" */
-export enum PlacesOrderBy {
-  address_asc = 'address_asc',
-  address_asc_nulls_first = 'address_asc_nulls_first',
-  address_desc = 'address_desc',
-  address_desc_nulls_first = 'address_desc_nulls_first',
-  category_asc = 'category_asc',
-  category_asc_nulls_first = 'category_asc_nulls_first',
-  category_desc = 'category_desc',
-  category_desc_nulls_first = 'category_desc_nulls_first',
-  city_id_asc = 'city_id_asc',
-  city_id_asc_nulls_first = 'city_id_asc_nulls_first',
-  city_id_desc = 'city_id_desc',
-  city_id_desc_nulls_first = 'city_id_desc_nulls_first',
-  created_at_asc = 'created_at_asc',
-  created_at_asc_nulls_first = 'created_at_asc_nulls_first',
-  created_at_desc = 'created_at_desc',
-  created_at_desc_nulls_first = 'created_at_desc_nulls_first',
-  google_id_asc = 'google_id_asc',
-  google_id_asc_nulls_first = 'google_id_asc_nulls_first',
-  google_id_desc = 'google_id_desc',
-  google_id_desc_nulls_first = 'google_id_desc_nulls_first',
-  id_asc = 'id_asc',
-  id_asc_nulls_first = 'id_asc_nulls_first',
-  id_desc = 'id_desc',
-  id_desc_nulls_first = 'id_desc_nulls_first',
-  latitude_asc = 'latitude_asc',
-  latitude_asc_nulls_first = 'latitude_asc_nulls_first',
-  latitude_desc = 'latitude_desc',
-  latitude_desc_nulls_first = 'latitude_desc_nulls_first',
-  longitude_asc = 'longitude_asc',
-  longitude_asc_nulls_first = 'longitude_asc_nulls_first',
-  longitude_desc = 'longitude_desc',
-  longitude_desc_nulls_first = 'longitude_desc_nulls_first',
-  name_asc = 'name_asc',
-  name_asc_nulls_first = 'name_asc_nulls_first',
-  name_desc = 'name_desc',
-  name_desc_nulls_first = 'name_desc_nulls_first',
-  slug_asc = 'slug_asc',
-  slug_asc_nulls_first = 'slug_asc_nulls_first',
-  slug_desc = 'slug_desc',
-  slug_desc_nulls_first = 'slug_desc_nulls_first',
-  updated_at_asc = 'updated_at_asc',
-  updated_at_asc_nulls_first = 'updated_at_asc_nulls_first',
-  updated_at_desc = 'updated_at_desc',
-  updated_at_desc_nulls_first = 'updated_at_desc_nulls_first',
-}
-/** ordering options when selecting data from "countries" */
-export enum CountriesOrderBy {
-  created_at_asc = 'created_at_asc',
-  created_at_asc_nulls_first = 'created_at_asc_nulls_first',
-  created_at_desc = 'created_at_desc',
-  created_at_desc_nulls_first = 'created_at_desc_nulls_first',
-  google_id_asc = 'google_id_asc',
-  google_id_asc_nulls_first = 'google_id_asc_nulls_first',
-  google_id_desc = 'google_id_desc',
-  google_id_desc_nulls_first = 'google_id_desc_nulls_first',
-  id_asc = 'id_asc',
-  id_asc_nulls_first = 'id_asc_nulls_first',
-  id_desc = 'id_desc',
-  id_desc_nulls_first = 'id_desc_nulls_first',
-  latitude_asc = 'latitude_asc',
-  latitude_asc_nulls_first = 'latitude_asc_nulls_first',
-  latitude_desc = 'latitude_desc',
-  latitude_desc_nulls_first = 'latitude_desc_nulls_first',
-  longitude_asc = 'longitude_asc',
-  longitude_asc_nulls_first = 'longitude_asc_nulls_first',
-  longitude_desc = 'longitude_desc',
-  longitude_desc_nulls_first = 'longitude_desc_nulls_first',
-  name_asc = 'name_asc',
-  name_asc_nulls_first = 'name_asc_nulls_first',
-  name_desc = 'name_desc',
-  name_desc_nulls_first = 'name_desc_nulls_first',
-  slug_asc = 'slug_asc',
-  slug_asc_nulls_first = 'slug_asc_nulls_first',
-  slug_desc = 'slug_desc',
-  slug_desc_nulls_first = 'slug_desc_nulls_first',
-  updated_at_asc = 'updated_at_asc',
-  updated_at_asc_nulls_first = 'updated_at_asc_nulls_first',
-  updated_at_desc = 'updated_at_desc',
-  updated_at_desc_nulls_first = 'updated_at_desc_nulls_first',
+
+// ====================================================
+// Enums
+// ====================================================
+
+/** column ordering options */
+export enum OrderBy {
+  asc = 'asc',
+  asc_nulls_first = 'asc_nulls_first',
+  desc = 'desc',
+  desc_nulls_first = 'desc_nulls_first',
 }
 /** conflict action */
 export enum ConflictAction {
@@ -592,58 +1065,89 @@ export enum PlacesColumn {
   updated_at = 'updated_at',
 }
 
+// ====================================================
+// END: Typescript template
+// ====================================================
+
+// ====================================================
+// Resolvers
+// ====================================================
+
 export namespace QueryResolvers {
-  export interface Resolvers<Context = any> {
-    cities?: CitiesResolver<
-      Cities[],
-      any,
+  export interface Resolvers<Context = any, TypeParent = never> {
+    /** fetch data from the table: "cities" */
+    cities?: CitiesResolver<Cities[], TypeParent, Context>;
+    /** fetch aggregated fields from the table: "cities" */
+    cities_aggregate?: CitiesAggregateResolver<
+      CitiesAggregate,
+      TypeParent,
       Context
-    > /** fetch data from the table: "cities" */;
-    cities_by_pk?: CitiesByPkResolver<
-      Cities | null,
-      any,
+    >;
+    /** fetch data from the table: "cities" using primary key columns */
+    cities_by_pk?: CitiesByPkResolver<Cities | null, TypeParent, Context>;
+    /** fetch data from the table: "countries" */
+    countries?: CountriesResolver<Countries[], TypeParent, Context>;
+    /** fetch aggregated fields from the table: "countries" */
+    countries_aggregate?: CountriesAggregateResolver<
+      CountriesAggregate,
+      TypeParent,
       Context
-    > /** fetch data from the table: "cities" using primary key columns */;
-    countries?: CountriesResolver<
-      Countries[],
-      any,
-      Context
-    > /** fetch data from the table: "countries" */;
+    >;
+    /** fetch data from the table: "countries" using primary key columns */
     countries_by_pk?: CountriesByPkResolver<
       Countries | null,
-      any,
+      TypeParent,
       Context
-    > /** fetch data from the table: "countries" using primary key columns */;
-    places?: PlacesResolver<
-      Places[],
-      any,
+    >;
+    /** fetch data from the table: "places" */
+    places?: PlacesResolver<Places[], TypeParent, Context>;
+    /** fetch aggregated fields from the table: "places" */
+    places_aggregate?: PlacesAggregateResolver<
+      PlacesAggregate,
+      TypeParent,
       Context
-    > /** fetch data from the table: "places" */;
-    places_by_pk?: PlacesByPkResolver<
-      Places | null,
-      any,
-      Context
-    > /** fetch data from the table: "places" using primary key columns */;
-    _?: Resolver<boolean | null, any, Context>;
+    >;
+    /** fetch data from the table: "places" using primary key columns */
+    places_by_pk?: PlacesByPkResolver<Places | null, TypeParent, Context>;
+
+    _?: Resolver<boolean | null, TypeParent, Context>;
   }
 
   export type CitiesResolver<
     R = Cities[],
-    Parent = any,
+    Parent = never,
     Context = any
   > = Resolver<R, Parent, Context, CitiesArgs>;
   export interface CitiesArgs {
-    limit?: number | null /** limit the nuber of rows returned */;
-    offset?: number | null /** skip the first n rows. Use only with order_by */;
-    order_by?:
-      | CitiesOrderBy[]
-      | null /** sort the rows by one or more columns */;
-    where?: CitiesBoolExp | null /** filter the rows returned */;
+    /** limit the nuber of rows returned */
+    limit?: number | null;
+    /** skip the first n rows. Use only with order_by */
+    offset?: number | null;
+    /** sort the rows by one or more columns */
+    order_by?: CitiesOrderBy[] | null;
+    /** filter the rows returned */
+    where?: CitiesBoolExp | null;
+  }
+
+  export type CitiesAggregateResolver<
+    R = CitiesAggregate,
+    Parent = never,
+    Context = any
+  > = Resolver<R, Parent, Context, CitiesAggregateArgs>;
+  export interface CitiesAggregateArgs {
+    /** limit the nuber of rows returned */
+    limit?: number | null;
+    /** skip the first n rows. Use only with order_by */
+    offset?: number | null;
+    /** sort the rows by one or more columns */
+    order_by?: CitiesOrderBy[] | null;
+    /** filter the rows returned */
+    where?: CitiesBoolExp | null;
   }
 
   export type CitiesByPkResolver<
     R = Cities | null,
-    Parent = any,
+    Parent = never,
     Context = any
   > = Resolver<R, Parent, Context, CitiesByPkArgs>;
   export interface CitiesByPkArgs {
@@ -652,21 +1156,39 @@ export namespace QueryResolvers {
 
   export type CountriesResolver<
     R = Countries[],
-    Parent = any,
+    Parent = never,
     Context = any
   > = Resolver<R, Parent, Context, CountriesArgs>;
   export interface CountriesArgs {
-    limit?: number | null /** limit the nuber of rows returned */;
-    offset?: number | null /** skip the first n rows. Use only with order_by */;
-    order_by?:
-      | CountriesOrderBy[]
-      | null /** sort the rows by one or more columns */;
-    where?: CountriesBoolExp | null /** filter the rows returned */;
+    /** limit the nuber of rows returned */
+    limit?: number | null;
+    /** skip the first n rows. Use only with order_by */
+    offset?: number | null;
+    /** sort the rows by one or more columns */
+    order_by?: CountriesOrderBy[] | null;
+    /** filter the rows returned */
+    where?: CountriesBoolExp | null;
+  }
+
+  export type CountriesAggregateResolver<
+    R = CountriesAggregate,
+    Parent = never,
+    Context = any
+  > = Resolver<R, Parent, Context, CountriesAggregateArgs>;
+  export interface CountriesAggregateArgs {
+    /** limit the nuber of rows returned */
+    limit?: number | null;
+    /** skip the first n rows. Use only with order_by */
+    offset?: number | null;
+    /** sort the rows by one or more columns */
+    order_by?: CountriesOrderBy[] | null;
+    /** filter the rows returned */
+    where?: CountriesBoolExp | null;
   }
 
   export type CountriesByPkResolver<
     R = Countries | null,
-    Parent = any,
+    Parent = never,
     Context = any
   > = Resolver<R, Parent, Context, CountriesByPkArgs>;
   export interface CountriesByPkArgs {
@@ -675,21 +1197,39 @@ export namespace QueryResolvers {
 
   export type PlacesResolver<
     R = Places[],
-    Parent = any,
+    Parent = never,
     Context = any
   > = Resolver<R, Parent, Context, PlacesArgs>;
   export interface PlacesArgs {
-    limit?: number | null /** limit the nuber of rows returned */;
-    offset?: number | null /** skip the first n rows. Use only with order_by */;
-    order_by?:
-      | PlacesOrderBy[]
-      | null /** sort the rows by one or more columns */;
-    where?: PlacesBoolExp | null /** filter the rows returned */;
+    /** limit the nuber of rows returned */
+    limit?: number | null;
+    /** skip the first n rows. Use only with order_by */
+    offset?: number | null;
+    /** sort the rows by one or more columns */
+    order_by?: PlacesOrderBy[] | null;
+    /** filter the rows returned */
+    where?: PlacesBoolExp | null;
+  }
+
+  export type PlacesAggregateResolver<
+    R = PlacesAggregate,
+    Parent = never,
+    Context = any
+  > = Resolver<R, Parent, Context, PlacesAggregateArgs>;
+  export interface PlacesAggregateArgs {
+    /** limit the nuber of rows returned */
+    limit?: number | null;
+    /** skip the first n rows. Use only with order_by */
+    offset?: number | null;
+    /** sort the rows by one or more columns */
+    order_by?: PlacesOrderBy[] | null;
+    /** filter the rows returned */
+    where?: PlacesBoolExp | null;
   }
 
   export type PlacesByPkResolver<
     R = Places | null,
-    Parent = any,
+    Parent = never,
     Context = any
   > = Resolver<R, Parent, Context, PlacesByPkArgs>;
   export interface PlacesByPkArgs {
@@ -705,271 +1245,1046 @@ export namespace QueryResolvers {
 
   // export type Resolver<
   //   R = boolean | null,
-  //   Parent = any,
+  //   Parent = never,
   //   Context = any
   // > = Resolver<R, Parent, Context>;
 }
 /** columns and relationships of "cities" */
 export namespace CitiesResolvers {
-  export interface Resolvers<Context = any> {
-    country?: CountryResolver<
-      Countries,
-      any,
+  export interface Resolvers<Context = any, TypeParent = Cities> {
+    /** An object relationship */
+    country?: CountryResolver<Countries, TypeParent, Context>;
+
+    country_id?: CountryIdResolver<Uuid, TypeParent, Context>;
+
+    created_at?: CreatedAtResolver<Timestamptz, TypeParent, Context>;
+
+    google_id?: GoogleIdResolver<string, TypeParent, Context>;
+
+    id?: IdResolver<Uuid, TypeParent, Context>;
+
+    latitude?: LatitudeResolver<number, TypeParent, Context>;
+
+    longitude?: LongitudeResolver<number, TypeParent, Context>;
+
+    name?: NameResolver<string, TypeParent, Context>;
+
+    nb_places?: NbPlacesResolver<number, TypeParent, Context>;
+    /** An array relationship */
+    places?: PlacesResolver<Places[], TypeParent, Context>;
+    /** An aggregated array relationship */
+    places_aggregate?: PlacesAggregateResolver<
+      PlacesAggregate,
+      TypeParent,
       Context
-    > /** An object relationship */;
-    country_id?: CountryIdResolver<Uuid, any, Context>;
-    created_at?: CreatedAtResolver<Timestamptz, any, Context>;
-    google_id?: GoogleIdResolver<string, any, Context>;
-    id?: IdResolver<Uuid, any, Context>;
-    latitude?: LatitudeResolver<number, any, Context>;
-    longitude?: LongitudeResolver<number, any, Context>;
-    name?: NameResolver<string, any, Context>;
-    nb_places?: NbPlacesResolver<number, any, Context>;
-    places?: PlacesResolver<
-      Places[],
-      any,
-      Context
-    > /** An array relationship */;
-    slug?: SlugResolver<string, any, Context>;
-    unsplash_id?: UnsplashIdResolver<string, any, Context>;
-    updated_at?: UpdatedAtResolver<Timestamptz, any, Context>;
+    >;
+
+    slug?: SlugResolver<string, TypeParent, Context>;
+
+    unsplash_id?: UnsplashIdResolver<string, TypeParent, Context>;
+
+    updated_at?: UpdatedAtResolver<Timestamptz, TypeParent, Context>;
   }
 
   export type CountryResolver<
     R = Countries,
-    Parent = any,
+    Parent = Cities,
     Context = any
   > = Resolver<R, Parent, Context>;
   export type CountryIdResolver<
     R = Uuid,
-    Parent = any,
+    Parent = Cities,
     Context = any
   > = Resolver<R, Parent, Context>;
   export type CreatedAtResolver<
     R = Timestamptz,
-    Parent = any,
+    Parent = Cities,
     Context = any
   > = Resolver<R, Parent, Context>;
   export type GoogleIdResolver<
     R = string,
-    Parent = any,
+    Parent = Cities,
     Context = any
   > = Resolver<R, Parent, Context>;
-  export type IdResolver<R = Uuid, Parent = any, Context = any> = Resolver<
+  export type IdResolver<R = Uuid, Parent = Cities, Context = any> = Resolver<
     R,
     Parent,
     Context
   >;
   export type LatitudeResolver<
     R = number,
-    Parent = any,
+    Parent = Cities,
     Context = any
   > = Resolver<R, Parent, Context>;
   export type LongitudeResolver<
     R = number,
-    Parent = any,
+    Parent = Cities,
     Context = any
   > = Resolver<R, Parent, Context>;
-  export type NameResolver<R = string, Parent = any, Context = any> = Resolver<
-    R,
-    Parent,
-    Context
-  >;
+  export type NameResolver<
+    R = string,
+    Parent = Cities,
+    Context = any
+  > = Resolver<R, Parent, Context>;
   export type NbPlacesResolver<
     R = number,
-    Parent = any,
+    Parent = Cities,
     Context = any
   > = Resolver<R, Parent, Context>;
   export type PlacesResolver<
     R = Places[],
-    Parent = any,
+    Parent = Cities,
     Context = any
   > = Resolver<R, Parent, Context, PlacesArgs>;
   export interface PlacesArgs {
-    limit?: number | null /** limit the nuber of rows returned */;
-    offset?: number | null /** skip the first n rows. Use only with order_by */;
-    order_by?:
-      | PlacesOrderBy[]
-      | null /** sort the rows by one or more columns */;
-    where?: PlacesBoolExp | null /** filter the rows returned */;
+    /** limit the nuber of rows returned */
+    limit?: number | null;
+    /** skip the first n rows. Use only with order_by */
+    offset?: number | null;
+    /** sort the rows by one or more columns */
+    order_by?: PlacesOrderBy[] | null;
+    /** filter the rows returned */
+    where?: PlacesBoolExp | null;
   }
 
-  export type SlugResolver<R = string, Parent = any, Context = any> = Resolver<
-    R,
-    Parent,
-    Context
-  >;
+  export type PlacesAggregateResolver<
+    R = PlacesAggregate,
+    Parent = Cities,
+    Context = any
+  > = Resolver<R, Parent, Context, PlacesAggregateArgs>;
+  export interface PlacesAggregateArgs {
+    /** limit the nuber of rows returned */
+    limit?: number | null;
+    /** skip the first n rows. Use only with order_by */
+    offset?: number | null;
+    /** sort the rows by one or more columns */
+    order_by?: PlacesOrderBy[] | null;
+    /** filter the rows returned */
+    where?: PlacesBoolExp | null;
+  }
+
+  export type SlugResolver<
+    R = string,
+    Parent = Cities,
+    Context = any
+  > = Resolver<R, Parent, Context>;
   export type UnsplashIdResolver<
     R = string,
-    Parent = any,
+    Parent = Cities,
     Context = any
   > = Resolver<R, Parent, Context>;
   export type UpdatedAtResolver<
     R = Timestamptz,
-    Parent = any,
+    Parent = Cities,
     Context = any
   > = Resolver<R, Parent, Context>;
 }
 /** columns and relationships of "countries" */
 export namespace CountriesResolvers {
-  export interface Resolvers<Context = any> {
-    cities?: CitiesResolver<
-      Cities[],
-      any,
+  export interface Resolvers<Context = any, TypeParent = Countries> {
+    /** An array relationship */
+    cities?: CitiesResolver<Cities[], TypeParent, Context>;
+    /** An aggregated array relationship */
+    cities_aggregate?: CitiesAggregateResolver<
+      CitiesAggregate,
+      TypeParent,
       Context
-    > /** An array relationship */;
-    created_at?: CreatedAtResolver<Timestamptz, any, Context>;
-    google_id?: GoogleIdResolver<string, any, Context>;
-    id?: IdResolver<Uuid, any, Context>;
-    latitude?: LatitudeResolver<number, any, Context>;
-    longitude?: LongitudeResolver<number, any, Context>;
-    name?: NameResolver<string, any, Context>;
-    slug?: SlugResolver<string, any, Context>;
-    updated_at?: UpdatedAtResolver<Timestamptz, any, Context>;
+    >;
+
+    created_at?: CreatedAtResolver<Timestamptz, TypeParent, Context>;
+
+    google_id?: GoogleIdResolver<string, TypeParent, Context>;
+
+    id?: IdResolver<Uuid, TypeParent, Context>;
+
+    latitude?: LatitudeResolver<number, TypeParent, Context>;
+
+    longitude?: LongitudeResolver<number, TypeParent, Context>;
+
+    name?: NameResolver<string, TypeParent, Context>;
+
+    slug?: SlugResolver<string, TypeParent, Context>;
+
+    updated_at?: UpdatedAtResolver<Timestamptz, TypeParent, Context>;
   }
 
   export type CitiesResolver<
     R = Cities[],
-    Parent = any,
+    Parent = Countries,
     Context = any
   > = Resolver<R, Parent, Context, CitiesArgs>;
   export interface CitiesArgs {
-    limit?: number | null /** limit the nuber of rows returned */;
-    offset?: number | null /** skip the first n rows. Use only with order_by */;
-    order_by?:
-      | CitiesOrderBy[]
-      | null /** sort the rows by one or more columns */;
-    where?: CitiesBoolExp | null /** filter the rows returned */;
+    /** limit the nuber of rows returned */
+    limit?: number | null;
+    /** skip the first n rows. Use only with order_by */
+    offset?: number | null;
+    /** sort the rows by one or more columns */
+    order_by?: CitiesOrderBy[] | null;
+    /** filter the rows returned */
+    where?: CitiesBoolExp | null;
+  }
+
+  export type CitiesAggregateResolver<
+    R = CitiesAggregate,
+    Parent = Countries,
+    Context = any
+  > = Resolver<R, Parent, Context, CitiesAggregateArgs>;
+  export interface CitiesAggregateArgs {
+    /** limit the nuber of rows returned */
+    limit?: number | null;
+    /** skip the first n rows. Use only with order_by */
+    offset?: number | null;
+    /** sort the rows by one or more columns */
+    order_by?: CitiesOrderBy[] | null;
+    /** filter the rows returned */
+    where?: CitiesBoolExp | null;
   }
 
   export type CreatedAtResolver<
     R = Timestamptz,
-    Parent = any,
+    Parent = Countries,
     Context = any
   > = Resolver<R, Parent, Context>;
   export type GoogleIdResolver<
     R = string,
-    Parent = any,
+    Parent = Countries,
     Context = any
   > = Resolver<R, Parent, Context>;
-  export type IdResolver<R = Uuid, Parent = any, Context = any> = Resolver<
-    R,
-    Parent,
-    Context
-  >;
+  export type IdResolver<
+    R = Uuid,
+    Parent = Countries,
+    Context = any
+  > = Resolver<R, Parent, Context>;
   export type LatitudeResolver<
     R = number,
-    Parent = any,
+    Parent = Countries,
     Context = any
   > = Resolver<R, Parent, Context>;
   export type LongitudeResolver<
     R = number,
-    Parent = any,
+    Parent = Countries,
     Context = any
   > = Resolver<R, Parent, Context>;
-  export type NameResolver<R = string, Parent = any, Context = any> = Resolver<
-    R,
-    Parent,
-    Context
-  >;
-  export type SlugResolver<R = string, Parent = any, Context = any> = Resolver<
-    R,
-    Parent,
-    Context
-  >;
+  export type NameResolver<
+    R = string,
+    Parent = Countries,
+    Context = any
+  > = Resolver<R, Parent, Context>;
+  export type SlugResolver<
+    R = string,
+    Parent = Countries,
+    Context = any
+  > = Resolver<R, Parent, Context>;
   export type UpdatedAtResolver<
     R = Timestamptz,
-    Parent = any,
+    Parent = Countries,
+    Context = any
+  > = Resolver<R, Parent, Context>;
+}
+/** aggregated selection of "cities" */
+export namespace CitiesAggregateResolvers {
+  export interface Resolvers<Context = any, TypeParent = CitiesAggregate> {
+    aggregate?: AggregateResolver<
+      CitiesAggregateFields | null,
+      TypeParent,
+      Context
+    >;
+
+    nodes?: NodesResolver<Cities[], TypeParent, Context>;
+  }
+
+  export type AggregateResolver<
+    R = CitiesAggregateFields | null,
+    Parent = CitiesAggregate,
+    Context = any
+  > = Resolver<R, Parent, Context>;
+  export type NodesResolver<
+    R = Cities[],
+    Parent = CitiesAggregate,
+    Context = any
+  > = Resolver<R, Parent, Context>;
+}
+/** aggregate fields of "cities" */
+export namespace CitiesAggregateFieldsResolvers {
+  export interface Resolvers<
+    Context = any,
+    TypeParent = CitiesAggregateFields
+  > {
+    avg?: AvgResolver<CitiesAvgFields | null, TypeParent, Context>;
+
+    count?: CountResolver<number | null, TypeParent, Context>;
+
+    max?: MaxResolver<CitiesMaxFields | null, TypeParent, Context>;
+
+    min?: MinResolver<CitiesMinFields | null, TypeParent, Context>;
+
+    sum?: SumResolver<CitiesSumFields | null, TypeParent, Context>;
+  }
+
+  export type AvgResolver<
+    R = CitiesAvgFields | null,
+    Parent = CitiesAggregateFields,
+    Context = any
+  > = Resolver<R, Parent, Context>;
+  export type CountResolver<
+    R = number | null,
+    Parent = CitiesAggregateFields,
+    Context = any
+  > = Resolver<R, Parent, Context>;
+  export type MaxResolver<
+    R = CitiesMaxFields | null,
+    Parent = CitiesAggregateFields,
+    Context = any
+  > = Resolver<R, Parent, Context>;
+  export type MinResolver<
+    R = CitiesMinFields | null,
+    Parent = CitiesAggregateFields,
+    Context = any
+  > = Resolver<R, Parent, Context>;
+  export type SumResolver<
+    R = CitiesSumFields | null,
+    Parent = CitiesAggregateFields,
+    Context = any
+  > = Resolver<R, Parent, Context>;
+}
+/** aggregate avg on columns */
+export namespace CitiesAvgFieldsResolvers {
+  export interface Resolvers<Context = any, TypeParent = CitiesAvgFields> {
+    latitude?: LatitudeResolver<number | null, TypeParent, Context>;
+
+    longitude?: LongitudeResolver<number | null, TypeParent, Context>;
+
+    nb_places?: NbPlacesResolver<number | null, TypeParent, Context>;
+  }
+
+  export type LatitudeResolver<
+    R = number | null,
+    Parent = CitiesAvgFields,
+    Context = any
+  > = Resolver<R, Parent, Context>;
+  export type LongitudeResolver<
+    R = number | null,
+    Parent = CitiesAvgFields,
+    Context = any
+  > = Resolver<R, Parent, Context>;
+  export type NbPlacesResolver<
+    R = number | null,
+    Parent = CitiesAvgFields,
+    Context = any
+  > = Resolver<R, Parent, Context>;
+}
+/** aggregate max on columns */
+export namespace CitiesMaxFieldsResolvers {
+  export interface Resolvers<Context = any, TypeParent = CitiesMaxFields> {
+    created_at?: CreatedAtResolver<Timestamptz | null, TypeParent, Context>;
+
+    google_id?: GoogleIdResolver<string | null, TypeParent, Context>;
+
+    latitude?: LatitudeResolver<number | null, TypeParent, Context>;
+
+    longitude?: LongitudeResolver<number | null, TypeParent, Context>;
+
+    name?: NameResolver<string | null, TypeParent, Context>;
+
+    nb_places?: NbPlacesResolver<number | null, TypeParent, Context>;
+
+    slug?: SlugResolver<string | null, TypeParent, Context>;
+
+    unsplash_id?: UnsplashIdResolver<string | null, TypeParent, Context>;
+
+    updated_at?: UpdatedAtResolver<Timestamptz | null, TypeParent, Context>;
+  }
+
+  export type CreatedAtResolver<
+    R = Timestamptz | null,
+    Parent = CitiesMaxFields,
+    Context = any
+  > = Resolver<R, Parent, Context>;
+  export type GoogleIdResolver<
+    R = string | null,
+    Parent = CitiesMaxFields,
+    Context = any
+  > = Resolver<R, Parent, Context>;
+  export type LatitudeResolver<
+    R = number | null,
+    Parent = CitiesMaxFields,
+    Context = any
+  > = Resolver<R, Parent, Context>;
+  export type LongitudeResolver<
+    R = number | null,
+    Parent = CitiesMaxFields,
+    Context = any
+  > = Resolver<R, Parent, Context>;
+  export type NameResolver<
+    R = string | null,
+    Parent = CitiesMaxFields,
+    Context = any
+  > = Resolver<R, Parent, Context>;
+  export type NbPlacesResolver<
+    R = number | null,
+    Parent = CitiesMaxFields,
+    Context = any
+  > = Resolver<R, Parent, Context>;
+  export type SlugResolver<
+    R = string | null,
+    Parent = CitiesMaxFields,
+    Context = any
+  > = Resolver<R, Parent, Context>;
+  export type UnsplashIdResolver<
+    R = string | null,
+    Parent = CitiesMaxFields,
+    Context = any
+  > = Resolver<R, Parent, Context>;
+  export type UpdatedAtResolver<
+    R = Timestamptz | null,
+    Parent = CitiesMaxFields,
+    Context = any
+  > = Resolver<R, Parent, Context>;
+}
+/** aggregate min on columns */
+export namespace CitiesMinFieldsResolvers {
+  export interface Resolvers<Context = any, TypeParent = CitiesMinFields> {
+    created_at?: CreatedAtResolver<Timestamptz | null, TypeParent, Context>;
+
+    google_id?: GoogleIdResolver<string | null, TypeParent, Context>;
+
+    latitude?: LatitudeResolver<number | null, TypeParent, Context>;
+
+    longitude?: LongitudeResolver<number | null, TypeParent, Context>;
+
+    name?: NameResolver<string | null, TypeParent, Context>;
+
+    nb_places?: NbPlacesResolver<number | null, TypeParent, Context>;
+
+    slug?: SlugResolver<string | null, TypeParent, Context>;
+
+    unsplash_id?: UnsplashIdResolver<string | null, TypeParent, Context>;
+
+    updated_at?: UpdatedAtResolver<Timestamptz | null, TypeParent, Context>;
+  }
+
+  export type CreatedAtResolver<
+    R = Timestamptz | null,
+    Parent = CitiesMinFields,
+    Context = any
+  > = Resolver<R, Parent, Context>;
+  export type GoogleIdResolver<
+    R = string | null,
+    Parent = CitiesMinFields,
+    Context = any
+  > = Resolver<R, Parent, Context>;
+  export type LatitudeResolver<
+    R = number | null,
+    Parent = CitiesMinFields,
+    Context = any
+  > = Resolver<R, Parent, Context>;
+  export type LongitudeResolver<
+    R = number | null,
+    Parent = CitiesMinFields,
+    Context = any
+  > = Resolver<R, Parent, Context>;
+  export type NameResolver<
+    R = string | null,
+    Parent = CitiesMinFields,
+    Context = any
+  > = Resolver<R, Parent, Context>;
+  export type NbPlacesResolver<
+    R = number | null,
+    Parent = CitiesMinFields,
+    Context = any
+  > = Resolver<R, Parent, Context>;
+  export type SlugResolver<
+    R = string | null,
+    Parent = CitiesMinFields,
+    Context = any
+  > = Resolver<R, Parent, Context>;
+  export type UnsplashIdResolver<
+    R = string | null,
+    Parent = CitiesMinFields,
+    Context = any
+  > = Resolver<R, Parent, Context>;
+  export type UpdatedAtResolver<
+    R = Timestamptz | null,
+    Parent = CitiesMinFields,
+    Context = any
+  > = Resolver<R, Parent, Context>;
+}
+/** aggregate sum on columns */
+export namespace CitiesSumFieldsResolvers {
+  export interface Resolvers<Context = any, TypeParent = CitiesSumFields> {
+    latitude?: LatitudeResolver<number | null, TypeParent, Context>;
+
+    longitude?: LongitudeResolver<number | null, TypeParent, Context>;
+
+    nb_places?: NbPlacesResolver<number | null, TypeParent, Context>;
+  }
+
+  export type LatitudeResolver<
+    R = number | null,
+    Parent = CitiesSumFields,
+    Context = any
+  > = Resolver<R, Parent, Context>;
+  export type LongitudeResolver<
+    R = number | null,
+    Parent = CitiesSumFields,
+    Context = any
+  > = Resolver<R, Parent, Context>;
+  export type NbPlacesResolver<
+    R = number | null,
+    Parent = CitiesSumFields,
     Context = any
   > = Resolver<R, Parent, Context>;
 }
 /** columns and relationships of "places" */
 export namespace PlacesResolvers {
-  export interface Resolvers<Context = any> {
-    address?: AddressResolver<string, any, Context>;
-    category?: CategoryResolver<string, any, Context>;
-    city?: CityResolver<Cities, any, Context> /** An object relationship */;
-    city_id?: CityIdResolver<Uuid, any, Context>;
-    created_at?: CreatedAtResolver<Timestamptz, any, Context>;
-    google_id?: GoogleIdResolver<string, any, Context>;
-    id?: IdResolver<Uuid, any, Context>;
-    latitude?: LatitudeResolver<number, any, Context>;
-    longitude?: LongitudeResolver<number, any, Context>;
-    name?: NameResolver<string, any, Context>;
-    slug?: SlugResolver<string, any, Context>;
-    updated_at?: UpdatedAtResolver<Timestamptz, any, Context>;
+  export interface Resolvers<Context = any, TypeParent = Places> {
+    address?: AddressResolver<string, TypeParent, Context>;
+
+    category?: CategoryResolver<string, TypeParent, Context>;
+    /** An object relationship */
+    city?: CityResolver<Cities, TypeParent, Context>;
+
+    city_id?: CityIdResolver<Uuid, TypeParent, Context>;
+
+    created_at?: CreatedAtResolver<Timestamptz, TypeParent, Context>;
+
+    google_id?: GoogleIdResolver<string, TypeParent, Context>;
+
+    id?: IdResolver<Uuid, TypeParent, Context>;
+
+    latitude?: LatitudeResolver<number, TypeParent, Context>;
+
+    longitude?: LongitudeResolver<number, TypeParent, Context>;
+
+    name?: NameResolver<string, TypeParent, Context>;
+
+    slug?: SlugResolver<string, TypeParent, Context>;
+
+    updated_at?: UpdatedAtResolver<Timestamptz, TypeParent, Context>;
   }
 
   export type AddressResolver<
     R = string,
-    Parent = any,
+    Parent = Places,
     Context = any
   > = Resolver<R, Parent, Context>;
   export type CategoryResolver<
     R = string,
-    Parent = any,
+    Parent = Places,
     Context = any
   > = Resolver<R, Parent, Context>;
-  export type CityResolver<R = Cities, Parent = any, Context = any> = Resolver<
-    R,
-    Parent,
-    Context
-  >;
-  export type CityIdResolver<R = Uuid, Parent = any, Context = any> = Resolver<
-    R,
-    Parent,
-    Context
-  >;
+  export type CityResolver<
+    R = Cities,
+    Parent = Places,
+    Context = any
+  > = Resolver<R, Parent, Context>;
+  export type CityIdResolver<
+    R = Uuid,
+    Parent = Places,
+    Context = any
+  > = Resolver<R, Parent, Context>;
   export type CreatedAtResolver<
     R = Timestamptz,
-    Parent = any,
+    Parent = Places,
     Context = any
   > = Resolver<R, Parent, Context>;
   export type GoogleIdResolver<
     R = string,
-    Parent = any,
+    Parent = Places,
     Context = any
   > = Resolver<R, Parent, Context>;
-  export type IdResolver<R = Uuid, Parent = any, Context = any> = Resolver<
+  export type IdResolver<R = Uuid, Parent = Places, Context = any> = Resolver<
     R,
     Parent,
     Context
   >;
   export type LatitudeResolver<
     R = number,
-    Parent = any,
+    Parent = Places,
     Context = any
   > = Resolver<R, Parent, Context>;
   export type LongitudeResolver<
     R = number,
-    Parent = any,
+    Parent = Places,
     Context = any
   > = Resolver<R, Parent, Context>;
-  export type NameResolver<R = string, Parent = any, Context = any> = Resolver<
-    R,
-    Parent,
-    Context
-  >;
-  export type SlugResolver<R = string, Parent = any, Context = any> = Resolver<
-    R,
-    Parent,
-    Context
-  >;
+  export type NameResolver<
+    R = string,
+    Parent = Places,
+    Context = any
+  > = Resolver<R, Parent, Context>;
+  export type SlugResolver<
+    R = string,
+    Parent = Places,
+    Context = any
+  > = Resolver<R, Parent, Context>;
   export type UpdatedAtResolver<
     R = Timestamptz,
-    Parent = any,
+    Parent = Places,
+    Context = any
+  > = Resolver<R, Parent, Context>;
+}
+/** aggregated selection of "places" */
+export namespace PlacesAggregateResolvers {
+  export interface Resolvers<Context = any, TypeParent = PlacesAggregate> {
+    aggregate?: AggregateResolver<
+      PlacesAggregateFields | null,
+      TypeParent,
+      Context
+    >;
+
+    nodes?: NodesResolver<Places[], TypeParent, Context>;
+  }
+
+  export type AggregateResolver<
+    R = PlacesAggregateFields | null,
+    Parent = PlacesAggregate,
+    Context = any
+  > = Resolver<R, Parent, Context>;
+  export type NodesResolver<
+    R = Places[],
+    Parent = PlacesAggregate,
+    Context = any
+  > = Resolver<R, Parent, Context>;
+}
+/** aggregate fields of "places" */
+export namespace PlacesAggregateFieldsResolvers {
+  export interface Resolvers<
+    Context = any,
+    TypeParent = PlacesAggregateFields
+  > {
+    avg?: AvgResolver<PlacesAvgFields | null, TypeParent, Context>;
+
+    count?: CountResolver<number | null, TypeParent, Context>;
+
+    max?: MaxResolver<PlacesMaxFields | null, TypeParent, Context>;
+
+    min?: MinResolver<PlacesMinFields | null, TypeParent, Context>;
+
+    sum?: SumResolver<PlacesSumFields | null, TypeParent, Context>;
+  }
+
+  export type AvgResolver<
+    R = PlacesAvgFields | null,
+    Parent = PlacesAggregateFields,
+    Context = any
+  > = Resolver<R, Parent, Context>;
+  export type CountResolver<
+    R = number | null,
+    Parent = PlacesAggregateFields,
+    Context = any
+  > = Resolver<R, Parent, Context>;
+  export type MaxResolver<
+    R = PlacesMaxFields | null,
+    Parent = PlacesAggregateFields,
+    Context = any
+  > = Resolver<R, Parent, Context>;
+  export type MinResolver<
+    R = PlacesMinFields | null,
+    Parent = PlacesAggregateFields,
+    Context = any
+  > = Resolver<R, Parent, Context>;
+  export type SumResolver<
+    R = PlacesSumFields | null,
+    Parent = PlacesAggregateFields,
+    Context = any
+  > = Resolver<R, Parent, Context>;
+}
+/** aggregate avg on columns */
+export namespace PlacesAvgFieldsResolvers {
+  export interface Resolvers<Context = any, TypeParent = PlacesAvgFields> {
+    latitude?: LatitudeResolver<number | null, TypeParent, Context>;
+
+    longitude?: LongitudeResolver<number | null, TypeParent, Context>;
+  }
+
+  export type LatitudeResolver<
+    R = number | null,
+    Parent = PlacesAvgFields,
+    Context = any
+  > = Resolver<R, Parent, Context>;
+  export type LongitudeResolver<
+    R = number | null,
+    Parent = PlacesAvgFields,
+    Context = any
+  > = Resolver<R, Parent, Context>;
+}
+/** aggregate max on columns */
+export namespace PlacesMaxFieldsResolvers {
+  export interface Resolvers<Context = any, TypeParent = PlacesMaxFields> {
+    address?: AddressResolver<string | null, TypeParent, Context>;
+
+    category?: CategoryResolver<string | null, TypeParent, Context>;
+
+    created_at?: CreatedAtResolver<Timestamptz | null, TypeParent, Context>;
+
+    google_id?: GoogleIdResolver<string | null, TypeParent, Context>;
+
+    latitude?: LatitudeResolver<number | null, TypeParent, Context>;
+
+    longitude?: LongitudeResolver<number | null, TypeParent, Context>;
+
+    name?: NameResolver<string | null, TypeParent, Context>;
+
+    slug?: SlugResolver<string | null, TypeParent, Context>;
+
+    updated_at?: UpdatedAtResolver<Timestamptz | null, TypeParent, Context>;
+  }
+
+  export type AddressResolver<
+    R = string | null,
+    Parent = PlacesMaxFields,
+    Context = any
+  > = Resolver<R, Parent, Context>;
+  export type CategoryResolver<
+    R = string | null,
+    Parent = PlacesMaxFields,
+    Context = any
+  > = Resolver<R, Parent, Context>;
+  export type CreatedAtResolver<
+    R = Timestamptz | null,
+    Parent = PlacesMaxFields,
+    Context = any
+  > = Resolver<R, Parent, Context>;
+  export type GoogleIdResolver<
+    R = string | null,
+    Parent = PlacesMaxFields,
+    Context = any
+  > = Resolver<R, Parent, Context>;
+  export type LatitudeResolver<
+    R = number | null,
+    Parent = PlacesMaxFields,
+    Context = any
+  > = Resolver<R, Parent, Context>;
+  export type LongitudeResolver<
+    R = number | null,
+    Parent = PlacesMaxFields,
+    Context = any
+  > = Resolver<R, Parent, Context>;
+  export type NameResolver<
+    R = string | null,
+    Parent = PlacesMaxFields,
+    Context = any
+  > = Resolver<R, Parent, Context>;
+  export type SlugResolver<
+    R = string | null,
+    Parent = PlacesMaxFields,
+    Context = any
+  > = Resolver<R, Parent, Context>;
+  export type UpdatedAtResolver<
+    R = Timestamptz | null,
+    Parent = PlacesMaxFields,
+    Context = any
+  > = Resolver<R, Parent, Context>;
+}
+/** aggregate min on columns */
+export namespace PlacesMinFieldsResolvers {
+  export interface Resolvers<Context = any, TypeParent = PlacesMinFields> {
+    address?: AddressResolver<string | null, TypeParent, Context>;
+
+    category?: CategoryResolver<string | null, TypeParent, Context>;
+
+    created_at?: CreatedAtResolver<Timestamptz | null, TypeParent, Context>;
+
+    google_id?: GoogleIdResolver<string | null, TypeParent, Context>;
+
+    latitude?: LatitudeResolver<number | null, TypeParent, Context>;
+
+    longitude?: LongitudeResolver<number | null, TypeParent, Context>;
+
+    name?: NameResolver<string | null, TypeParent, Context>;
+
+    slug?: SlugResolver<string | null, TypeParent, Context>;
+
+    updated_at?: UpdatedAtResolver<Timestamptz | null, TypeParent, Context>;
+  }
+
+  export type AddressResolver<
+    R = string | null,
+    Parent = PlacesMinFields,
+    Context = any
+  > = Resolver<R, Parent, Context>;
+  export type CategoryResolver<
+    R = string | null,
+    Parent = PlacesMinFields,
+    Context = any
+  > = Resolver<R, Parent, Context>;
+  export type CreatedAtResolver<
+    R = Timestamptz | null,
+    Parent = PlacesMinFields,
+    Context = any
+  > = Resolver<R, Parent, Context>;
+  export type GoogleIdResolver<
+    R = string | null,
+    Parent = PlacesMinFields,
+    Context = any
+  > = Resolver<R, Parent, Context>;
+  export type LatitudeResolver<
+    R = number | null,
+    Parent = PlacesMinFields,
+    Context = any
+  > = Resolver<R, Parent, Context>;
+  export type LongitudeResolver<
+    R = number | null,
+    Parent = PlacesMinFields,
+    Context = any
+  > = Resolver<R, Parent, Context>;
+  export type NameResolver<
+    R = string | null,
+    Parent = PlacesMinFields,
+    Context = any
+  > = Resolver<R, Parent, Context>;
+  export type SlugResolver<
+    R = string | null,
+    Parent = PlacesMinFields,
+    Context = any
+  > = Resolver<R, Parent, Context>;
+  export type UpdatedAtResolver<
+    R = Timestamptz | null,
+    Parent = PlacesMinFields,
+    Context = any
+  > = Resolver<R, Parent, Context>;
+}
+/** aggregate sum on columns */
+export namespace PlacesSumFieldsResolvers {
+  export interface Resolvers<Context = any, TypeParent = PlacesSumFields> {
+    latitude?: LatitudeResolver<number | null, TypeParent, Context>;
+
+    longitude?: LongitudeResolver<number | null, TypeParent, Context>;
+  }
+
+  export type LatitudeResolver<
+    R = number | null,
+    Parent = PlacesSumFields,
+    Context = any
+  > = Resolver<R, Parent, Context>;
+  export type LongitudeResolver<
+    R = number | null,
+    Parent = PlacesSumFields,
+    Context = any
+  > = Resolver<R, Parent, Context>;
+}
+/** aggregated selection of "countries" */
+export namespace CountriesAggregateResolvers {
+  export interface Resolvers<Context = any, TypeParent = CountriesAggregate> {
+    aggregate?: AggregateResolver<
+      CountriesAggregateFields | null,
+      TypeParent,
+      Context
+    >;
+
+    nodes?: NodesResolver<Countries[], TypeParent, Context>;
+  }
+
+  export type AggregateResolver<
+    R = CountriesAggregateFields | null,
+    Parent = CountriesAggregate,
+    Context = any
+  > = Resolver<R, Parent, Context>;
+  export type NodesResolver<
+    R = Countries[],
+    Parent = CountriesAggregate,
+    Context = any
+  > = Resolver<R, Parent, Context>;
+}
+/** aggregate fields of "countries" */
+export namespace CountriesAggregateFieldsResolvers {
+  export interface Resolvers<
+    Context = any,
+    TypeParent = CountriesAggregateFields
+  > {
+    avg?: AvgResolver<CountriesAvgFields | null, TypeParent, Context>;
+
+    count?: CountResolver<number | null, TypeParent, Context>;
+
+    max?: MaxResolver<CountriesMaxFields | null, TypeParent, Context>;
+
+    min?: MinResolver<CountriesMinFields | null, TypeParent, Context>;
+
+    sum?: SumResolver<CountriesSumFields | null, TypeParent, Context>;
+  }
+
+  export type AvgResolver<
+    R = CountriesAvgFields | null,
+    Parent = CountriesAggregateFields,
+    Context = any
+  > = Resolver<R, Parent, Context>;
+  export type CountResolver<
+    R = number | null,
+    Parent = CountriesAggregateFields,
+    Context = any
+  > = Resolver<R, Parent, Context>;
+  export type MaxResolver<
+    R = CountriesMaxFields | null,
+    Parent = CountriesAggregateFields,
+    Context = any
+  > = Resolver<R, Parent, Context>;
+  export type MinResolver<
+    R = CountriesMinFields | null,
+    Parent = CountriesAggregateFields,
+    Context = any
+  > = Resolver<R, Parent, Context>;
+  export type SumResolver<
+    R = CountriesSumFields | null,
+    Parent = CountriesAggregateFields,
+    Context = any
+  > = Resolver<R, Parent, Context>;
+}
+/** aggregate avg on columns */
+export namespace CountriesAvgFieldsResolvers {
+  export interface Resolvers<Context = any, TypeParent = CountriesAvgFields> {
+    latitude?: LatitudeResolver<number | null, TypeParent, Context>;
+
+    longitude?: LongitudeResolver<number | null, TypeParent, Context>;
+  }
+
+  export type LatitudeResolver<
+    R = number | null,
+    Parent = CountriesAvgFields,
+    Context = any
+  > = Resolver<R, Parent, Context>;
+  export type LongitudeResolver<
+    R = number | null,
+    Parent = CountriesAvgFields,
+    Context = any
+  > = Resolver<R, Parent, Context>;
+}
+/** aggregate max on columns */
+export namespace CountriesMaxFieldsResolvers {
+  export interface Resolvers<Context = any, TypeParent = CountriesMaxFields> {
+    created_at?: CreatedAtResolver<Timestamptz | null, TypeParent, Context>;
+
+    google_id?: GoogleIdResolver<string | null, TypeParent, Context>;
+
+    latitude?: LatitudeResolver<number | null, TypeParent, Context>;
+
+    longitude?: LongitudeResolver<number | null, TypeParent, Context>;
+
+    name?: NameResolver<string | null, TypeParent, Context>;
+
+    slug?: SlugResolver<string | null, TypeParent, Context>;
+
+    updated_at?: UpdatedAtResolver<Timestamptz | null, TypeParent, Context>;
+  }
+
+  export type CreatedAtResolver<
+    R = Timestamptz | null,
+    Parent = CountriesMaxFields,
+    Context = any
+  > = Resolver<R, Parent, Context>;
+  export type GoogleIdResolver<
+    R = string | null,
+    Parent = CountriesMaxFields,
+    Context = any
+  > = Resolver<R, Parent, Context>;
+  export type LatitudeResolver<
+    R = number | null,
+    Parent = CountriesMaxFields,
+    Context = any
+  > = Resolver<R, Parent, Context>;
+  export type LongitudeResolver<
+    R = number | null,
+    Parent = CountriesMaxFields,
+    Context = any
+  > = Resolver<R, Parent, Context>;
+  export type NameResolver<
+    R = string | null,
+    Parent = CountriesMaxFields,
+    Context = any
+  > = Resolver<R, Parent, Context>;
+  export type SlugResolver<
+    R = string | null,
+    Parent = CountriesMaxFields,
+    Context = any
+  > = Resolver<R, Parent, Context>;
+  export type UpdatedAtResolver<
+    R = Timestamptz | null,
+    Parent = CountriesMaxFields,
+    Context = any
+  > = Resolver<R, Parent, Context>;
+}
+/** aggregate min on columns */
+export namespace CountriesMinFieldsResolvers {
+  export interface Resolvers<Context = any, TypeParent = CountriesMinFields> {
+    created_at?: CreatedAtResolver<Timestamptz | null, TypeParent, Context>;
+
+    google_id?: GoogleIdResolver<string | null, TypeParent, Context>;
+
+    latitude?: LatitudeResolver<number | null, TypeParent, Context>;
+
+    longitude?: LongitudeResolver<number | null, TypeParent, Context>;
+
+    name?: NameResolver<string | null, TypeParent, Context>;
+
+    slug?: SlugResolver<string | null, TypeParent, Context>;
+
+    updated_at?: UpdatedAtResolver<Timestamptz | null, TypeParent, Context>;
+  }
+
+  export type CreatedAtResolver<
+    R = Timestamptz | null,
+    Parent = CountriesMinFields,
+    Context = any
+  > = Resolver<R, Parent, Context>;
+  export type GoogleIdResolver<
+    R = string | null,
+    Parent = CountriesMinFields,
+    Context = any
+  > = Resolver<R, Parent, Context>;
+  export type LatitudeResolver<
+    R = number | null,
+    Parent = CountriesMinFields,
+    Context = any
+  > = Resolver<R, Parent, Context>;
+  export type LongitudeResolver<
+    R = number | null,
+    Parent = CountriesMinFields,
+    Context = any
+  > = Resolver<R, Parent, Context>;
+  export type NameResolver<
+    R = string | null,
+    Parent = CountriesMinFields,
+    Context = any
+  > = Resolver<R, Parent, Context>;
+  export type SlugResolver<
+    R = string | null,
+    Parent = CountriesMinFields,
+    Context = any
+  > = Resolver<R, Parent, Context>;
+  export type UpdatedAtResolver<
+    R = Timestamptz | null,
+    Parent = CountriesMinFields,
+    Context = any
+  > = Resolver<R, Parent, Context>;
+}
+/** aggregate sum on columns */
+export namespace CountriesSumFieldsResolvers {
+  export interface Resolvers<Context = any, TypeParent = CountriesSumFields> {
+    latitude?: LatitudeResolver<number | null, TypeParent, Context>;
+
+    longitude?: LongitudeResolver<number | null, TypeParent, Context>;
+  }
+
+  export type LatitudeResolver<
+    R = number | null,
+    Parent = CountriesSumFields,
+    Context = any
+  > = Resolver<R, Parent, Context>;
+  export type LongitudeResolver<
+    R = number | null,
+    Parent = CountriesSumFields,
     Context = any
   > = Resolver<R, Parent, Context>;
 }
 
 export namespace MutationResolvers {
-  export interface Resolvers<Context = any> {
-    createPlace?: CreatePlaceResolver<Places, any, Context>;
+  export interface Resolvers<Context = any, TypeParent = never> {
+    createPlace?: CreatePlaceResolver<Places, TypeParent, Context>;
   }
 
   export type CreatePlaceResolver<
     R = Places,
-    Parent = any,
+    Parent = never,
     Context = any
   > = Resolver<R, Parent, Context, CreatePlaceArgs>;
   export interface CreatePlaceArgs {
@@ -978,79 +2293,70 @@ export namespace MutationResolvers {
 }
 /** response of any mutation on the table "cities" */
 export namespace CitiesMutationResponseResolvers {
-  export interface Resolvers<Context = any> {
-    affected_rows?: AffectedRowsResolver<
-      number,
-      any,
-      Context
-    > /** number of affected rows by the mutation */;
-    returning?: ReturningResolver<
-      Cities[],
-      any,
-      Context
-    > /** data of the affected rows by the mutation */;
+  export interface Resolvers<
+    Context = any,
+    TypeParent = CitiesMutationResponse
+  > {
+    /** number of affected rows by the mutation */
+    affected_rows?: AffectedRowsResolver<number, TypeParent, Context>;
+    /** data of the affected rows by the mutation */
+    returning?: ReturningResolver<Cities[], TypeParent, Context>;
   }
 
   export type AffectedRowsResolver<
     R = number,
-    Parent = any,
+    Parent = CitiesMutationResponse,
     Context = any
   > = Resolver<R, Parent, Context>;
   export type ReturningResolver<
     R = Cities[],
-    Parent = any,
+    Parent = CitiesMutationResponse,
     Context = any
   > = Resolver<R, Parent, Context>;
 }
 /** response of any mutation on the table "countries" */
 export namespace CountriesMutationResponseResolvers {
-  export interface Resolvers<Context = any> {
-    affected_rows?: AffectedRowsResolver<
-      number,
-      any,
-      Context
-    > /** number of affected rows by the mutation */;
-    returning?: ReturningResolver<
-      Countries[],
-      any,
-      Context
-    > /** data of the affected rows by the mutation */;
+  export interface Resolvers<
+    Context = any,
+    TypeParent = CountriesMutationResponse
+  > {
+    /** number of affected rows by the mutation */
+    affected_rows?: AffectedRowsResolver<number, TypeParent, Context>;
+    /** data of the affected rows by the mutation */
+    returning?: ReturningResolver<Countries[], TypeParent, Context>;
   }
 
   export type AffectedRowsResolver<
     R = number,
-    Parent = any,
+    Parent = CountriesMutationResponse,
     Context = any
   > = Resolver<R, Parent, Context>;
   export type ReturningResolver<
     R = Countries[],
-    Parent = any,
+    Parent = CountriesMutationResponse,
     Context = any
   > = Resolver<R, Parent, Context>;
 }
 /** response of any mutation on the table "places" */
 export namespace PlacesMutationResponseResolvers {
-  export interface Resolvers<Context = any> {
-    affected_rows?: AffectedRowsResolver<
-      number,
-      any,
-      Context
-    > /** number of affected rows by the mutation */;
-    returning?: ReturningResolver<
-      Places[],
-      any,
-      Context
-    > /** data of the affected rows by the mutation */;
+  export interface Resolvers<
+    Context = any,
+    TypeParent = PlacesMutationResponse
+  > {
+    /** number of affected rows by the mutation */
+    affected_rows?: AffectedRowsResolver<number, TypeParent, Context>;
+    /** data of the affected rows by the mutation */
+    returning?: ReturningResolver<Places[], TypeParent, Context>;
   }
 
   export type AffectedRowsResolver<
     R = number,
-    Parent = any,
+    Parent = PlacesMutationResponse,
     Context = any
   > = Resolver<R, Parent, Context>;
   export type ReturningResolver<
     R = Places[],
-    Parent = any,
+    Parent = PlacesMutationResponse,
     Context = any
   > = Resolver<R, Parent, Context>;
 }

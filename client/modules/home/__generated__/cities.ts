@@ -1,6 +1,8 @@
 /* tslint:disable */
 // This file was automatically generated and should not be edited.
 
+import { cities_order_by } from './../../../../__generated__/globalTypes';
+
 // ====================================================
 // GraphQL query operation: cities
 // ====================================================
@@ -23,4 +25,8 @@ export interface cities_cities {
 
 export interface cities {
   cities: cities_cities[];
+}
+
+export interface citiesVariables {
+  order_by?: cities_order_by[] | null;
 }
