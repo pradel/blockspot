@@ -218,65 +218,61 @@ class AddPlaceComponent extends React.Component<
                     <React.Fragment>
                       <Divider width="100%" />
                       {loading && <div>Loading ...</div>}
-                      {!loading &&
-                        step === Step.infos && (
-                          <React.Fragment>
-                            <Paragraph textAlign="center" marginBottom={20}>
-                              Enter the city of your spot:
-                            </Paragraph>
-                            <StyledReactSelect
-                              options={options}
-                              onChange={this.handleChangeCity}
-                            />
-                            <Paragraph textAlign="center" marginBottom={20}>
-                              Select a category:
-                            </Paragraph>
-                            <StyledReactSelect
-                              options={categoriesOptions}
-                              onChange={this.handleChangeCategory}
-                            />
-                            <Paragraph textAlign="center" marginBottom={20}>
-                              Enter the address of your spot:
-                            </Paragraph>
-                            <StyledReactSelectGoogleAutocomplete
-                              value={this.state.autocompleteValue}
-                              onInputChange={this.handleChangeAutocomplete}
-                              onChange={this.handleSelectAutocomplete}
-                              searchOptions={{ types: ['establishment'] }}
-                            />
-                            <Button onClick={this.handleClickSubmit}>
-                              Confirm
-                            </Button>
-                          </React.Fragment>
-                        )}
-                      {!loading &&
-                        step === Step.recaptcha && (
-                          <React.Fragment>
-                            <Paragraph textAlign="center">
-                              In order to add a place we need to verify that you
-                              are not a robot.
-                            </Paragraph>
-                            <ReCAPTCHA
-                              ref="recaptcha"
-                              sitekey={config.googleRecaptchaKey}
-                              onChange={this.handleChangeRecaptcha}
-                            />
-                          </React.Fragment>
-                        )}
-                      {!loading &&
-                        step === Step.success && (
-                          <React.Fragment>
-                            <Paragraph textAlign="center">
-                              Thanks for helping the community to find more
-                              spots.
-                              <br />
-                              You rock 🤘
-                            </Paragraph>
-                            <Button onClick={this.handleClickSeeNewPlace}>
-                              Check it out!
-                            </Button>
-                          </React.Fragment>
-                        )}
+                      {!loading && step === Step.infos && (
+                        <React.Fragment>
+                          <Paragraph textAlign="center" marginBottom={20}>
+                            Enter the city of your spot:
+                          </Paragraph>
+                          <StyledReactSelect
+                            options={options}
+                            onChange={this.handleChangeCity}
+                          />
+                          <Paragraph textAlign="center" marginBottom={20}>
+                            Select a category:
+                          </Paragraph>
+                          <StyledReactSelect
+                            options={categoriesOptions}
+                            onChange={this.handleChangeCategory}
+                          />
+                          <Paragraph textAlign="center" marginBottom={20}>
+                            Enter the address of your spot:
+                          </Paragraph>
+                          <StyledReactSelectGoogleAutocomplete
+                            value={this.state.autocompleteValue}
+                            onInputChange={this.handleChangeAutocomplete}
+                            onChange={this.handleSelectAutocomplete}
+                            searchOptions={{ types: ['establishment'] }}
+                          />
+                          <Button onClick={this.handleClickSubmit}>
+                            Confirm
+                          </Button>
+                        </React.Fragment>
+                      )}
+                      {!loading && step === Step.recaptcha && (
+                        <React.Fragment>
+                          <Paragraph textAlign="center">
+                            In order to add a place we need to verify that you
+                            are not a robot.
+                          </Paragraph>
+                          <ReCAPTCHA
+                            ref="recaptcha"
+                            sitekey={config.googleRecaptchaKey}
+                            onChange={this.handleChangeRecaptcha}
+                          />
+                        </React.Fragment>
+                      )}
+                      {!loading && step === Step.success && (
+                        <React.Fragment>
+                          <Paragraph textAlign="center">
+                            Thanks for helping the community to find more spots.
+                            <br />
+                            You rock 🤘
+                          </Paragraph>
+                          <Button onClick={this.handleClickSeeNewPlace}>
+                            Check it out!
+                          </Button>
+                        </React.Fragment>
+                      )}
                     </React.Fragment>
                   );
                 }}
