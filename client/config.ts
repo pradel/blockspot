@@ -7,8 +7,6 @@ export const config = {
   googleMapsApiKey: publicRuntimeConfig.googleMapsApiKey,
   googleRecaptchaKey: publicRuntimeConfig.googleRecaptchaKey,
   mapboxToken: publicRuntimeConfig.mapboxToken,
-  heightFooter: 40,
-  widthColumn: 400,
   githubUrl: 'https://github.com/pradel/blockspot',
   twitterUrl: 'https://twitter.com/Blockspotapp',
   telegramUrl: 'https://t.me/blockspotapp',
@@ -18,4 +16,7 @@ export const config = {
   bchAddress: 'qrxrlwjl6aueh3kce4u0ygmqz5quuna06g0mvt4pue',
   ltcAddress: 'MWWVv55c6KHrMjQtAAb3YyxhDFQ42uCPJd',
   categories: ['bar', 'restaurant', 'shop', 'other'],
+  heightFooter: 40,
+  widthColumn: 400,
+  basePx: 16,
 };

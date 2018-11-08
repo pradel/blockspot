@@ -22,13 +22,23 @@ const AddPlace = dynamic<AddPlaceProps>(() => import('./AddPlace'), {
   ssr: false,
 });
 
-const ColumnContainer = styled.div`
-  width: ${config.widthColumn}px;
+const ColumnContainer = styled.div<{ closed?: boolean }>`
+  width: 100%;
   position absolute;
   top: 0;
   left: 0;
   bottom: ${config.heightFooter}px;
   overflow-y: auto;
+  z-index: 3;
+  background-color: #ffffff;
+  transition: transform 0.3s ease;
+  transform: ${props =>
+    props.closed ? `translateX(-100%)` : 'translateX(0%)'};
+
+  @media screen and (min-width: 40em) {
+    width: ${config.widthColumn}px;
+    transform: translateX(0%);
+  }
 `;
 
 const ColumnInnerContainer = styled.div`
@@ -128,7 +138,7 @@ export class CityPage extends React.Component<WithRouterProps, State> {
                 } to spend your crypto. Join the community and discover / help other people to find new spots!`}
                 url={`${config.appUrl}/city/${urlParams.citySlug}`}
               />
-              <ColumnContainer>
+              <ColumnContainer closed={!!mapSelectedPlaceId}>
                 <ColumnInnerContainer>
                   {/* <SearchInput placeholder="Berlin, Paris..." /> */}
                   <ColumnHeader>

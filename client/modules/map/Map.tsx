@@ -23,10 +23,14 @@ const styles = {
 
 const MapContainer = styled.div`
   position: absolute;
-  left: ${config.widthColumn}px;
+  left: 0px;
   bottom: ${config.heightFooter}px;
   top: 0;
   right: 0;
+
+  @media screen and (min-width: 40em) {
+    left: ${config.widthColumn}px;
+  }
 `;
 
 const RoundButton = styled.button`
@@ -105,8 +109,14 @@ class Map extends React.Component<Props, State> {
   }
 
   handleWindowResize = () => {
+    // On mobile full width
+    let width = window.innerWidth;
+    // On desktop we have the left column
+    if (width > config.basePx * 40) {
+      width = window.innerWidth - config.widthColumn;
+    }
     this.setState({
-      width: window.innerWidth - config.widthColumn,
+      width,
       height: window.innerHeight - config.heightFooter,
     });
   };

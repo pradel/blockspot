@@ -8,9 +8,8 @@ import { Container } from '../../components';
 import { cities, citiesVariables } from './__generated__/cities';
 import { order_by } from '../../../__generated__/globalTypes';
 
-const CityCardContainer: any = styled.div`
-  background: url(https://source.unsplash.com/${(props: any) =>
-      props.unsplashId}/320x180);
+const CityCardContainer = styled.div<{ unsplashId: string }>`
+  background: url(https://source.unsplash.com/${props => props.unsplashId}/320x180);
   background-position: center center;
   background-size: cover;
   margin: 20px;
