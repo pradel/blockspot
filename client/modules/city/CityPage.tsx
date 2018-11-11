@@ -2,7 +2,7 @@ import * as React from 'react';
 import { WithRouterProps } from 'next/router';
 import styled from 'styled-components';
 import { Viewport } from 'react-map-gl';
-import gql from 'graphql-tag';
+import { gql } from 'graphql.macro';
 import { Query } from 'react-apollo';
 import Error from 'next/error';
 import Link from 'next/link';
@@ -180,7 +180,6 @@ export class CityPage extends React.Component<WithRouterProps, State> {
               <Map
                 mapViewport={mapViewport}
                 mapSelectedPlaceId={mapSelectedPlaceId}
-                city={city}
                 places={city.places}
                 onChangeMapViewport={this.handleChangeMapViewport}
                 onChangeShowAddPlace={this.handleShowAddPlace}

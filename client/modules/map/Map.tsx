@@ -69,9 +69,6 @@ const StyledAddButton = styled(Button)`
 interface Props {
   mapViewport?: Viewport;
   mapSelectedPlaceId?: string;
-  city: {
-    name: string;
-  };
   places: {
     id: string;
     name: string;
@@ -130,7 +127,7 @@ class Map extends React.Component<Props, State> {
     if (!process.browser || !this.props.mapViewport) {
       return null;
     }
-    const { city, places, onSelectMapPlace, mapSelectedPlaceId } = this.props;
+    const { places, onSelectMapPlace, mapSelectedPlaceId } = this.props;
     const { buttonHovered } = this.state;
 
     let selectedPlace = mapSelectedPlaceId
@@ -176,9 +173,7 @@ class Map extends React.Component<Props, State> {
           )}
         </ReactMapGL>
         {buttonHovered && (
-          <StyledAddButton icon="true">
-            Add a spot to {city.name}
-          </StyledAddButton>
+          <StyledAddButton icon="true">Add a spot</StyledAddButton>
         )}
         <RoundButton
           onClick={this.handleClickAddPlace}

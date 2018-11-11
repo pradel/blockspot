@@ -9,3 +9,4 @@ declare namespace NodeJS {
 }
 
 declare module 'react-google-recaptcha';
+declare module 'graphql.macro';

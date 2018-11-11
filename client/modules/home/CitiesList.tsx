@@ -1,4 +1,4 @@
-import gql from 'graphql-tag';
+import { gql } from 'graphql.macro';
 import { Query } from 'react-apollo';
 import { Flex, Box } from 'grid-styled';
 import styled from 'styled-components';

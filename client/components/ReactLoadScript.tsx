@@ -33,14 +33,22 @@ export class ReactLoadScript extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    // TODO check script not already loaded
     this.loadScript();
   }
 
   loadScript = async () => {
     this.setState({ loading: true });
     try {
-      await loadScript(this.props.url);
+      // Check script not already loaded
+      const loadedScripts = [
+        ...(document.getElementsByTagName('script') as any),
+      ];
+      const isLoaded = loadedScripts.find(
+        ({ src }: { src: string }) => src === this.props.url
+      );
+      if (!isLoaded) {
+        await loadScript(this.props.url);
+      }
       this.setState({ loading: false });
     } catch (error) {
       // TODO handle error

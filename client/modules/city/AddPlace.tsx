@@ -3,7 +3,7 @@ import Error from 'next/error';
 import Router from 'next/router';
 import styled from 'styled-components';
 import { Divider, Paragraph } from 'reakit';
-import gql from 'graphql-tag';
+import { gql } from 'graphql.macro';
 import { graphql, MutationFunc, Query } from 'react-apollo';
 import ReCAPTCHA from 'react-google-recaptcha';
 import { Viewport } from 'react-map-gl';
