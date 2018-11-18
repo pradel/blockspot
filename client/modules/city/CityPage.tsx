@@ -113,7 +113,7 @@ export class CityPage extends React.Component<WithRouterProps, State> {
     const { router } = this.props;
     const { mapViewport, mapSelectedPlaceId, showAddPlace } = this.state;
     const urlParams = {
-      citySlug: router.query!.citySlug as string,
+      citySlug: router!.query!.citySlug as string,
     };
 
     return (

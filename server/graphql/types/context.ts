@@ -1,5 +1,5 @@
 import { Binding } from '../../generated/binding';
 
-export interface Context {
+export interface GraphqlContext {
   hasura: Binding;
 }

@@ -5,11 +5,14 @@
 // START Enums and Input Objects
 //==============================================================
 
+/**
+ * column ordering options
+ */
 export enum order_by {
-  asc = 'asc',
-  asc_nulls_first = 'asc_nulls_first',
-  desc = 'desc',
-  desc_nulls_first = 'desc_nulls_first',
+  asc = "asc",
+  asc_nulls_first = "asc_nulls_first",
+  desc = "desc",
+  desc_nulls_first = "desc_nulls_first",
 }
 
 export interface InputCreatePlace {
@@ -19,6 +22,9 @@ export interface InputCreatePlace {
   category: string;
 }
 
+/**
+ * Boolean expression to filter rows from the table "cities". All fields are combined with a logical 'AND'.
+ */
 export interface cities_bool_exp {
   _and?: (cities_bool_exp | null)[] | null;
   _not?: cities_bool_exp | null;
@@ -38,6 +44,9 @@ export interface cities_bool_exp {
   updated_at?: timestamptz_comparison_exp | null;
 }
 
+/**
+ * ordering options when selecting data from "cities"
+ */
 export interface cities_order_by {
   country?: countries_order_by | null;
   country_id?: order_by | null;
@@ -53,6 +62,9 @@ export interface cities_order_by {
   updated_at?: order_by | null;
 }
 
+/**
+ * Boolean expression to filter rows from the table "countries". All fields are combined with a logical 'AND'.
+ */
 export interface countries_bool_exp {
   _and?: (countries_bool_exp | null)[] | null;
   _not?: countries_bool_exp | null;
@@ -68,6 +80,9 @@ export interface countries_bool_exp {
   updated_at?: timestamptz_comparison_exp | null;
 }
 
+/**
+ * ordering options when selecting data from "countries"
+ */
 export interface countries_order_by {
   created_at?: order_by | null;
   google_id?: order_by | null;
@@ -79,6 +94,9 @@ export interface countries_order_by {
   updated_at?: order_by | null;
 }
 
+/**
+ * expression to compare columns of type integer. All fields are combined with logical 'AND'.
+ */
 export interface integer_comparison_exp {
   _eq?: number | null;
   _gt?: number | null;
@@ -91,6 +109,9 @@ export interface integer_comparison_exp {
   _nin?: (number | null)[] | null;
 }
 
+/**
+ * Boolean expression to filter rows from the table "places". All fields are combined with a logical 'AND'.
+ */
 export interface places_bool_exp {
   _and?: (places_bool_exp | null)[] | null;
   _not?: places_bool_exp | null;
@@ -109,6 +130,9 @@ export interface places_bool_exp {
   updated_at?: timestamptz_comparison_exp | null;
 }
 
+/**
+ * expression to compare columns of type real. All fields are combined with logical 'AND'.
+ */
 export interface real_comparison_exp {
   _eq?: number | null;
   _gt?: number | null;
@@ -121,6 +145,9 @@ export interface real_comparison_exp {
   _nin?: (number | null)[] | null;
 }
 
+/**
+ * expression to compare columns of type timestamptz. All fields are combined with logical 'AND'.
+ */
 export interface timestamptz_comparison_exp {
   _eq?: any | null;
   _gt?: any | null;
@@ -133,6 +160,9 @@ export interface timestamptz_comparison_exp {
   _nin?: (any | null)[] | null;
 }
 
+/**
+ * expression to compare columns of type uuid. All fields are combined with logical 'AND'.
+ */
 export interface uuid_comparison_exp {
   _eq?: any | null;
   _gt?: any | null;
@@ -145,6 +175,9 @@ export interface uuid_comparison_exp {
   _nin?: (any | null)[] | null;
 }
 
+/**
+ * expression to compare columns of type varchar. All fields are combined with logical 'AND'.
+ */
 export interface varchar_comparison_exp {
   _eq?: string | null;
   _gt?: string | null;

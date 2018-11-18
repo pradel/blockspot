@@ -5,13 +5,13 @@ import { CreatePlaceMutationArgs } from '../types/resolvers';
 import { saveNewPlace } from '../../lib';
 import { Category } from '../../types';
 import { logger } from '../../utils/logger';
-import { Context } from '../types/context';
+import { GraphqlContext } from '../types/context';
 import { hasuraSchema } from '../hasura';
 
 export const createPlace = async (
   _: any,
   args: CreatePlaceMutationArgs,
-  context: Context,
+  context: GraphqlContext,
   info: IGraphQLToolsResolveInfo
 ) => {
   try {

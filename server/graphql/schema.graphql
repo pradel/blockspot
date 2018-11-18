@@ -1,6 +1,8 @@
-# columns and relationships of "cities"
+"""
+columns and relationships of "cities"
+"""
 type cities {
-  # An object relationship
+  """An object relationship"""
   country: countries!
   country_id: uuid!
   created_at: timestamptz!
@@ -11,33 +13,33 @@ type cities {
   name: String!
   nb_places: Int!
 
-  # An array relationship
+  """An array relationship"""
   places(
-    # limit the nuber of rows returned
+    """limit the nuber of rows returned"""
     limit: Int
 
-    # skip the first n rows. Use only with order_by
+    """skip the first n rows. Use only with order_by"""
     offset: Int
 
-    # sort the rows by one or more columns
+    """sort the rows by one or more columns"""
     order_by: [places_order_by!]
 
-    # filter the rows returned
+    """filter the rows returned"""
     where: places_bool_exp
   ): [places!]!
 
-  # An aggregated array relationship
+  """An aggregated array relationship"""
   places_aggregate(
-    # limit the nuber of rows returned
+    """limit the nuber of rows returned"""
     limit: Int
 
-    # skip the first n rows. Use only with order_by
+    """skip the first n rows. Use only with order_by"""
     offset: Int
 
-    # sort the rows by one or more columns
+    """sort the rows by one or more columns"""
     order_by: [places_order_by!]
 
-    # filter the rows returned
+    """filter the rows returned"""
     where: places_bool_exp
   ): places_aggregate!
   slug: String!
@@ -45,13 +47,17 @@ type cities {
   updated_at: timestamptz!
 }
 
-# aggregated selection of "cities"
+"""
+aggregated selection of "cities"
+"""
 type cities_aggregate {
   aggregate: cities_aggregate_fields
   nodes: [cities!]!
 }
 
-# aggregate fields of "cities"
+"""
+aggregate fields of "cities"
+"""
 type cities_aggregate_fields {
   avg: cities_avg_fields
   count: Int
@@ -60,20 +66,24 @@ type cities_aggregate_fields {
   sum: cities_sum_fields
 }
 
-# input type for inserting array relation for remote table "cities"
+"""
+input type for inserting array relation for remote table "cities"
+"""
 input cities_arr_rel_insert_input {
   data: [cities_insert_input!]!
   on_conflict: cities_on_conflict
 }
 
-# aggregate avg on columns
+"""aggregate avg on columns"""
 type cities_avg_fields {
   latitude: Float
   longitude: Float
   nb_places: Float
 }
 
-# Boolean expression to filter rows from the table "cities". All fields are combined with a logical 'AND'.
+"""
+Boolean expression to filter rows from the table "cities". All fields are combined with a logical 'AND'.
+"""
 input cities_bool_exp {
   _and: [cities_bool_exp]
   _not: cities_bool_exp
@@ -93,54 +103,62 @@ input cities_bool_exp {
   updated_at: timestamptz_comparison_exp
 }
 
-# columns of table "cities"
+"""
+columns of table "cities"
+"""
 enum cities_column {
-  # column name
+  """column name"""
   country_id
 
-  # column name
+  """column name"""
   created_at
 
-  # column name
+  """column name"""
   google_id
 
-  # column name
+  """column name"""
   id
 
-  # column name
+  """column name"""
   latitude
 
-  # column name
+  """column name"""
   longitude
 
-  # column name
+  """column name"""
   name
 
-  # column name
+  """column name"""
   nb_places
 
-  # column name
+  """column name"""
   slug
 
-  # column name
+  """column name"""
   unsplash_id
 
-  # column name
+  """column name"""
   updated_at
 }
 
-# unique or primary key constraints on table "cities"
+"""
+unique or primary key constraints on table "cities"
+"""
 enum cities_constraint {
-  # unique or primary key constraint
+  """unique or primary key constraint"""
   cities_pkey
 }
 
-# input type for incrementing integer columne in table "cities"
+"""
+input type for incrementing integer columne in table "cities"
+"""
 input cities_inc_input {
   nb_places: Int
 }
 
-# input type for inserting data into table "cities"
+"""
+input type for inserting data into table "cities"
+"""
 input cities_insert_input {
   country: countries_obj_rel_insert_input
   country_id: uuid
@@ -157,7 +175,7 @@ input cities_insert_input {
   updated_at: timestamptz
 }
 
-# aggregate max on columns
+"""aggregate max on columns"""
 type cities_max_fields {
   created_at: timestamptz
   google_id: String
@@ -170,7 +188,7 @@ type cities_max_fields {
   updated_at: timestamptz
 }
 
-# aggregate min on columns
+"""aggregate min on columns"""
 type cities_min_fields {
   created_at: timestamptz
   google_id: String
@@ -183,30 +201,38 @@ type cities_min_fields {
   updated_at: timestamptz
 }
 
-# response of any mutation on the table "cities"
+"""
+response of any mutation on the table "cities"
+"""
 type cities_mutation_response {
-  # number of affected rows by the mutation
+  """number of affected rows by the mutation"""
   affected_rows: Int!
 
-  # data of the affected rows by the mutation
+  """data of the affected rows by the mutation"""
   returning: [cities!]!
 }
 
-# input type for inserting object relation for remote table "cities"
+"""
+input type for inserting object relation for remote table "cities"
+"""
 input cities_obj_rel_insert_input {
   data: cities_insert_input!
   on_conflict: cities_on_conflict
 }
 
-# on conflict condition type for table "cities"
+"""
+on conflict condition type for table "cities"
+"""
 input cities_on_conflict {
-  # action when conflict occurs (deprecated)
+  """action when conflict occurs (deprecated)"""
   action: conflict_action
   constraint: cities_constraint!
   update_columns: [cities_column!]
 }
 
-# ordering options when selecting data from "cities"
+"""
+ordering options when selecting data from "cities"
+"""
 input cities_order_by {
   country: countries_order_by
   country_id: order_by
@@ -222,7 +248,9 @@ input cities_order_by {
   updated_at: order_by
 }
 
-# input type for updating data in table "cities"
+"""
+input type for updating data in table "cities"
+"""
 input cities_set_input {
   country_id: uuid
   created_at: timestamptz
@@ -237,51 +265,53 @@ input cities_set_input {
   updated_at: timestamptz
 }
 
-# aggregate sum on columns
+"""aggregate sum on columns"""
 type cities_sum_fields {
   latitude: Float
   longitude: Float
   nb_places: Int
 }
 
-# conflict action
+"""conflict action"""
 enum conflict_action {
-  # ignore the insert on this row
+  """ignore the insert on this row"""
   ignore
 
-  # update the row with the given values
+  """update the row with the given values"""
   update
 }
 
-# columns and relationships of "countries"
+"""
+columns and relationships of "countries"
+"""
 type countries {
-  # An array relationship
+  """An array relationship"""
   cities(
-    # limit the nuber of rows returned
+    """limit the nuber of rows returned"""
     limit: Int
 
-    # skip the first n rows. Use only with order_by
+    """skip the first n rows. Use only with order_by"""
     offset: Int
 
-    # sort the rows by one or more columns
+    """sort the rows by one or more columns"""
     order_by: [cities_order_by!]
 
-    # filter the rows returned
+    """filter the rows returned"""
     where: cities_bool_exp
   ): [cities!]!
 
-  # An aggregated array relationship
+  """An aggregated array relationship"""
   cities_aggregate(
-    # limit the nuber of rows returned
+    """limit the nuber of rows returned"""
     limit: Int
 
-    # skip the first n rows. Use only with order_by
+    """skip the first n rows. Use only with order_by"""
     offset: Int
 
-    # sort the rows by one or more columns
+    """sort the rows by one or more columns"""
     order_by: [cities_order_by!]
 
-    # filter the rows returned
+    """filter the rows returned"""
     where: cities_bool_exp
   ): cities_aggregate!
   created_at: timestamptz!
@@ -294,13 +324,17 @@ type countries {
   updated_at: timestamptz!
 }
 
-# aggregated selection of "countries"
+"""
+aggregated selection of "countries"
+"""
 type countries_aggregate {
   aggregate: countries_aggregate_fields
   nodes: [countries!]!
 }
 
-# aggregate fields of "countries"
+"""
+aggregate fields of "countries"
+"""
 type countries_aggregate_fields {
   avg: countries_avg_fields
   count: Int
@@ -309,19 +343,23 @@ type countries_aggregate_fields {
   sum: countries_sum_fields
 }
 
-# input type for inserting array relation for remote table "countries"
+"""
+input type for inserting array relation for remote table "countries"
+"""
 input countries_arr_rel_insert_input {
   data: [countries_insert_input!]!
   on_conflict: countries_on_conflict
 }
 
-# aggregate avg on columns
+"""aggregate avg on columns"""
 type countries_avg_fields {
   latitude: Float
   longitude: Float
 }
 
-# Boolean expression to filter rows from the table "countries". All fields are combined with a logical 'AND'.
+"""
+Boolean expression to filter rows from the table "countries". All fields are combined with a logical 'AND'.
+"""
 input countries_bool_exp {
   _and: [countries_bool_exp]
   _not: countries_bool_exp
@@ -337,40 +375,46 @@ input countries_bool_exp {
   updated_at: timestamptz_comparison_exp
 }
 
-# columns of table "countries"
+"""
+columns of table "countries"
+"""
 enum countries_column {
-  # column name
+  """column name"""
   created_at
 
-  # column name
+  """column name"""
   google_id
 
-  # column name
+  """column name"""
   id
 
-  # column name
+  """column name"""
   latitude
 
-  # column name
+  """column name"""
   longitude
 
-  # column name
+  """column name"""
   name
 
-  # column name
+  """column name"""
   slug
 
-  # column name
+  """column name"""
   updated_at
 }
 
-# unique or primary key constraints on table "countries"
+"""
+unique or primary key constraints on table "countries"
+"""
 enum countries_constraint {
-  # unique or primary key constraint
+  """unique or primary key constraint"""
   countries_pkey
 }
 
-# input type for inserting data into table "countries"
+"""
+input type for inserting data into table "countries"
+"""
 input countries_insert_input {
   cities: cities_arr_rel_insert_input
   created_at: timestamptz
@@ -383,7 +427,7 @@ input countries_insert_input {
   updated_at: timestamptz
 }
 
-# aggregate max on columns
+"""aggregate max on columns"""
 type countries_max_fields {
   created_at: timestamptz
   google_id: String
@@ -394,7 +438,7 @@ type countries_max_fields {
   updated_at: timestamptz
 }
 
-# aggregate min on columns
+"""aggregate min on columns"""
 type countries_min_fields {
   created_at: timestamptz
   google_id: String
@@ -405,30 +449,38 @@ type countries_min_fields {
   updated_at: timestamptz
 }
 
-# response of any mutation on the table "countries"
+"""
+response of any mutation on the table "countries"
+"""
 type countries_mutation_response {
-  # number of affected rows by the mutation
+  """number of affected rows by the mutation"""
   affected_rows: Int!
 
-  # data of the affected rows by the mutation
+  """data of the affected rows by the mutation"""
   returning: [countries!]!
 }
 
-# input type for inserting object relation for remote table "countries"
+"""
+input type for inserting object relation for remote table "countries"
+"""
 input countries_obj_rel_insert_input {
   data: countries_insert_input!
   on_conflict: countries_on_conflict
 }
 
-# on conflict condition type for table "countries"
+"""
+on conflict condition type for table "countries"
+"""
 input countries_on_conflict {
-  # action when conflict occurs (deprecated)
+  """action when conflict occurs (deprecated)"""
   action: conflict_action
   constraint: countries_constraint!
   update_columns: [countries_column!]
 }
 
-# ordering options when selecting data from "countries"
+"""
+ordering options when selecting data from "countries"
+"""
 input countries_order_by {
   created_at: order_by
   google_id: order_by
@@ -440,7 +492,9 @@ input countries_order_by {
   updated_at: order_by
 }
 
-# input type for updating data in table "countries"
+"""
+input type for updating data in table "countries"
+"""
 input countries_set_input {
   created_at: timestamptz
   google_id: String
@@ -452,7 +506,7 @@ input countries_set_input {
   updated_at: timestamptz
 }
 
-# aggregate sum on columns
+"""aggregate sum on columns"""
 type countries_sum_fields {
   latitude: Float
   longitude: Float
@@ -465,7 +519,9 @@ input InputCreatePlace {
   category: String!
 }
 
-# expression to compare columns of type integer. All fields are combined with logical 'AND'.
+"""
+expression to compare columns of type integer. All fields are combined with logical 'AND'.
+"""
 input integer_comparison_exp {
   _eq: Int
   _gt: Int
@@ -482,27 +538,29 @@ type Mutation {
   createPlace(input: InputCreatePlace!): places!
 }
 
-# column ordering options
+"""column ordering options"""
 enum order_by {
-  # in the ascending order, nulls last
+  """in the ascending order, nulls last"""
   asc
 
-  # in the ascending order, nulls first
+  """in the ascending order, nulls first"""
   asc_nulls_first
 
-  # in the descending order, nulls last
+  """in the descending order, nulls last"""
   desc
 
-  # in the ascending order, nulls first
+  """in the ascending order, nulls first"""
   desc_nulls_first
 }
 
-# columns and relationships of "places"
+"""
+columns and relationships of "places"
+"""
 type places {
   address: String!
   category: String!
 
-  # An object relationship
+  """An object relationship"""
   city: cities!
   city_id: uuid!
   created_at: timestamptz!
@@ -515,13 +573,17 @@ type places {
   updated_at: timestamptz!
 }
 
-# aggregated selection of "places"
+"""
+aggregated selection of "places"
+"""
 type places_aggregate {
   aggregate: places_aggregate_fields
   nodes: [places!]!
 }
 
-# aggregate fields of "places"
+"""
+aggregate fields of "places"
+"""
 type places_aggregate_fields {
   avg: places_avg_fields
   count: Int
@@ -530,19 +592,23 @@ type places_aggregate_fields {
   sum: places_sum_fields
 }
 
-# input type for inserting array relation for remote table "places"
+"""
+input type for inserting array relation for remote table "places"
+"""
 input places_arr_rel_insert_input {
   data: [places_insert_input!]!
   on_conflict: places_on_conflict
 }
 
-# aggregate avg on columns
+"""aggregate avg on columns"""
 type places_avg_fields {
   latitude: Float
   longitude: Float
 }
 
-# Boolean expression to filter rows from the table "places". All fields are combined with a logical 'AND'.
+"""
+Boolean expression to filter rows from the table "places". All fields are combined with a logical 'AND'.
+"""
 input places_bool_exp {
   _and: [places_bool_exp]
   _not: places_bool_exp
@@ -561,49 +627,55 @@ input places_bool_exp {
   updated_at: timestamptz_comparison_exp
 }
 
-# columns of table "places"
+"""
+columns of table "places"
+"""
 enum places_column {
-  # column name
+  """column name"""
   address
 
-  # column name
+  """column name"""
   category
 
-  # column name
+  """column name"""
   city_id
 
-  # column name
+  """column name"""
   created_at
 
-  # column name
+  """column name"""
   google_id
 
-  # column name
+  """column name"""
   id
 
-  # column name
+  """column name"""
   latitude
 
-  # column name
+  """column name"""
   longitude
 
-  # column name
+  """column name"""
   name
 
-  # column name
+  """column name"""
   slug
 
-  # column name
+  """column name"""
   updated_at
 }
 
-# unique or primary key constraints on table "places"
+"""
+unique or primary key constraints on table "places"
+"""
 enum places_constraint {
-  # unique or primary key constraint
+  """unique or primary key constraint"""
   places_pkey
 }
 
-# input type for inserting data into table "places"
+"""
+input type for inserting data into table "places"
+"""
 input places_insert_input {
   address: String
   category: String
@@ -619,7 +691,7 @@ input places_insert_input {
   updated_at: timestamptz
 }
 
-# aggregate max on columns
+"""aggregate max on columns"""
 type places_max_fields {
   address: String
   category: String
@@ -632,7 +704,7 @@ type places_max_fields {
   updated_at: timestamptz
 }
 
-# aggregate min on columns
+"""aggregate min on columns"""
 type places_min_fields {
   address: String
   category: String
@@ -645,30 +717,38 @@ type places_min_fields {
   updated_at: timestamptz
 }
 
-# response of any mutation on the table "places"
+"""
+response of any mutation on the table "places"
+"""
 type places_mutation_response {
-  # number of affected rows by the mutation
+  """number of affected rows by the mutation"""
   affected_rows: Int!
 
-  # data of the affected rows by the mutation
+  """data of the affected rows by the mutation"""
   returning: [places!]!
 }
 
-# input type for inserting object relation for remote table "places"
+"""
+input type for inserting object relation for remote table "places"
+"""
 input places_obj_rel_insert_input {
   data: places_insert_input!
   on_conflict: places_on_conflict
 }
 
-# on conflict condition type for table "places"
+"""
+on conflict condition type for table "places"
+"""
 input places_on_conflict {
-  # action when conflict occurs (deprecated)
+  """action when conflict occurs (deprecated)"""
   action: conflict_action
   constraint: places_constraint!
   update_columns: [places_column!]
 }
 
-# ordering options when selecting data from "places"
+"""
+ordering options when selecting data from "places"
+"""
 input places_order_by {
   address: order_by
   category: order_by
@@ -684,7 +764,9 @@ input places_order_by {
   updated_at: order_by
 }
 
-# input type for updating data in table "places"
+"""
+input type for updating data in table "places"
+"""
 input places_set_input {
   address: String
   category: String
@@ -699,115 +781,129 @@ input places_set_input {
   updated_at: timestamptz
 }
 
-# aggregate sum on columns
+"""aggregate sum on columns"""
 type places_sum_fields {
   latitude: Float
   longitude: Float
 }
 
 type Query {
-  # fetch data from the table: "cities"
+  """
+  fetch data from the table: "cities"
+  """
   cities(
-    # limit the nuber of rows returned
+    """limit the nuber of rows returned"""
     limit: Int
 
-    # skip the first n rows. Use only with order_by
+    """skip the first n rows. Use only with order_by"""
     offset: Int
 
-    # sort the rows by one or more columns
+    """sort the rows by one or more columns"""
     order_by: [cities_order_by!]
 
-    # filter the rows returned
+    """filter the rows returned"""
     where: cities_bool_exp
   ): [cities!]!
 
-  # fetch aggregated fields from the table: "cities"
+  """
+  fetch aggregated fields from the table: "cities"
+  """
   cities_aggregate(
-    # limit the nuber of rows returned
+    """limit the nuber of rows returned"""
     limit: Int
 
-    # skip the first n rows. Use only with order_by
+    """skip the first n rows. Use only with order_by"""
     offset: Int
 
-    # sort the rows by one or more columns
+    """sort the rows by one or more columns"""
     order_by: [cities_order_by!]
 
-    # filter the rows returned
+    """filter the rows returned"""
     where: cities_bool_exp
   ): cities_aggregate!
 
-  # fetch data from the table: "cities" using primary key columns
+  """fetch data from the table: "cities" using primary key columns"""
   cities_by_pk(id: uuid!): cities
 
-  # fetch data from the table: "countries"
+  """
+  fetch data from the table: "countries"
+  """
   countries(
-    # limit the nuber of rows returned
+    """limit the nuber of rows returned"""
     limit: Int
 
-    # skip the first n rows. Use only with order_by
+    """skip the first n rows. Use only with order_by"""
     offset: Int
 
-    # sort the rows by one or more columns
+    """sort the rows by one or more columns"""
     order_by: [countries_order_by!]
 
-    # filter the rows returned
+    """filter the rows returned"""
     where: countries_bool_exp
   ): [countries!]!
 
-  # fetch aggregated fields from the table: "countries"
+  """
+  fetch aggregated fields from the table: "countries"
+  """
   countries_aggregate(
-    # limit the nuber of rows returned
+    """limit the nuber of rows returned"""
     limit: Int
 
-    # skip the first n rows. Use only with order_by
+    """skip the first n rows. Use only with order_by"""
     offset: Int
 
-    # sort the rows by one or more columns
+    """sort the rows by one or more columns"""
     order_by: [countries_order_by!]
 
-    # filter the rows returned
+    """filter the rows returned"""
     where: countries_bool_exp
   ): countries_aggregate!
 
-  # fetch data from the table: "countries" using primary key columns
+  """fetch data from the table: "countries" using primary key columns"""
   countries_by_pk(id: uuid!): countries
 
-  # fetch data from the table: "places"
+  """
+  fetch data from the table: "places"
+  """
   places(
-    # limit the nuber of rows returned
+    """limit the nuber of rows returned"""
     limit: Int
 
-    # skip the first n rows. Use only with order_by
+    """skip the first n rows. Use only with order_by"""
     offset: Int
 
-    # sort the rows by one or more columns
+    """sort the rows by one or more columns"""
     order_by: [places_order_by!]
 
-    # filter the rows returned
+    """filter the rows returned"""
     where: places_bool_exp
   ): [places!]!
 
-  # fetch aggregated fields from the table: "places"
+  """
+  fetch aggregated fields from the table: "places"
+  """
   places_aggregate(
-    # limit the nuber of rows returned
+    """limit the nuber of rows returned"""
     limit: Int
 
-    # skip the first n rows. Use only with order_by
+    """skip the first n rows. Use only with order_by"""
     offset: Int
 
-    # sort the rows by one or more columns
+    """sort the rows by one or more columns"""
     order_by: [places_order_by!]
 
-    # filter the rows returned
+    """filter the rows returned"""
     where: places_bool_exp
   ): places_aggregate!
 
-  # fetch data from the table: "places" using primary key columns
+  """fetch data from the table: "places" using primary key columns"""
   places_by_pk(id: uuid!): places
   _: Boolean
 }
 
-# expression to compare columns of type real. All fields are combined with logical 'AND'.
+"""
+expression to compare columns of type real. All fields are combined with logical 'AND'.
+"""
 input real_comparison_exp {
   _eq: Float
   _gt: Float
@@ -822,7 +918,9 @@ input real_comparison_exp {
 
 scalar timestamptz
 
-# expression to compare columns of type timestamptz. All fields are combined with logical 'AND'.
+"""
+expression to compare columns of type timestamptz. All fields are combined with logical 'AND'.
+"""
 input timestamptz_comparison_exp {
   _eq: timestamptz
   _gt: timestamptz
@@ -837,7 +935,9 @@ input timestamptz_comparison_exp {
 
 scalar uuid
 
-# expression to compare columns of type uuid. All fields are combined with logical 'AND'.
+"""
+expression to compare columns of type uuid. All fields are combined with logical 'AND'.
+"""
 input uuid_comparison_exp {
   _eq: uuid
   _gt: uuid
@@ -850,7 +950,9 @@ input uuid_comparison_exp {
   _nin: [uuid]
 }
 
-# expression to compare columns of type varchar. All fields are combined with logical 'AND'.
+"""
+expression to compare columns of type varchar. All fields are combined with logical 'AND'.
+"""
 input varchar_comparison_exp {
   _eq: String
   _gt: String
