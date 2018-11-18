@@ -61,8 +61,8 @@ nextApp.prepare().then(() => {
       windowMs: 1000,
       max: 5,
       skip: req => {
-        // Whitelist static folder
-        if (req.url.startsWith('/static/')) {
+        // Whitelist static and next build folder
+        if (req.url.startsWith('/static/') || req.url.startsWith('/_next/')) {
           return true;
         }
         return false;
