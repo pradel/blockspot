@@ -1,4 +1,5 @@
 {
   "projectId": "ansu6x",
-  "chromeWebSecurity": true
+  "chromeWebSecurity": true,
+  "baseUrl": "http://blockspot:3000"
 }

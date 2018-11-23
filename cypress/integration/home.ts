@@ -1,8 +1,6 @@
-const url = 'http://blockspot:3000';
-
 describe('Home', () => {
   it('Render the home page', () => {
-    cy.visit(url);
+    cy.visit('/');
     cy.matchImageSnapshot('home');
   });
 
@@ -12,7 +10,7 @@ describe('Home', () => {
     });
 
     it('Render the home page', () => {
-      cy.visit(url);
+      cy.visit('/');
       cy.matchImageSnapshot('home-mobile');
     });
   });
