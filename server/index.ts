@@ -42,7 +42,7 @@ nextApp.prepare().then(() => {
   // Needed by express-rate-limit
   expressApp.enable('trust proxy');
 
-  if (process.env.NODE_ENV === 'production') {
+  if (process.env.NODE_ENV === 'production' && !process.env.IS_CI) {
     /**
      * Redirect from www to root domain
      * See https://zeit.co/docs/guides/redirect
@@ -82,6 +82,10 @@ nextApp.prepare().then(() => {
   });
 
   expressApp.listen(port, () => {
-    console.log(`Ready on ${process.env.APP_URL}`);
+    console.log(`> Ready on ${process.env.APP_URL}`);
+    console.log(`> Env ${process.env.NODE_ENV}`);
+    if (process.env.IS_CI) {
+      console.log(`> In CI`);
+    }
   });
 });

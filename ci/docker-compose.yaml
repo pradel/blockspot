@@ -6,8 +6,6 @@ services:
     restart: always
     ports:
       - '5432:5432'
-    volumes:
-      - db_data:/var/lib/postgresql/data
   graphql-engine:
     image: hasura/graphql-engine:v1.0.0-alpha28
     ports:
@@ -26,14 +24,16 @@ services:
       - --enable-console
   cypress:
     build:
-      context: .
+      context: ../
       dockerfile: docker/Dockerfile-cypress
     depends_on:
       - blockspot
-    volumes:
-      - .:/app/
+    environment:
+      CYPRESS_RECORD_KEY: ${CYPRESS_RECORD_KEY}
   blockspot:
-    build: .
+    build:
+      context: ../
+      dockerfile: docker/Dockerfile.prod
     ports:
       - '3000:3000'
     depends_on:
@@ -47,8 +47,10 @@ services:
       HASURA_URL: http://graphql-engine:8080
       JWT_SECRET: hA-LhR.pPv9eR/2V4t~B?7reN@]Y>d+g
       PG_CONNECTION_STRING: postgres://postgres:@postgres:5432/postgres
-    volumes:
-      - .:/app/
-
-volumes:
-  ? db_data
+      PGSSLMODE: require
+      IS_CI: "true"
+      GOOGLE_API_KEY: ${GOOGLE_API_KEY}
+      GOOGLE_MAPS_API_KEY: ${GOOGLE_MAPS_API_KEY}
+      GOOGLE_RECAPTCHA_CLIENT_KEY: ${GOOGLE_RECAPTCHA_CLIENT_KEY}
+      GOOGLE_RECAPTCHA_SERVER_KEY: ${GOOGLE_RECAPTCHA_SERVER_KEY}
+      MAPBOX_TOKEN: ${MAPBOX_TOKEN}

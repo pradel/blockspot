@@ -5,16 +5,66 @@ notifications:
 
 sudo: false
 
-cache: yarn
+env:
+  - DOCKER_COMPOSE_VERSION=1.22.0
+
+cache:
+  yarn: true
+  directories:
+    - node_modules
+    # Cache cypress binary
+    - ~/.cache
 
 node_js:
   - '10'
+
+services:
+  - docker
+
+before_install:
+  # upgrade docker-compose with DOCKER_COMPOSE_VERSION env version
+  - sudo rm /usr/local/bin/docker-compose
+  - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
+  - chmod +x docker-compose
+  - sudo mv docker-compose /usr/local/bin
+
+  # stop the postgres db so we can start the docker one
+  - sudo /etc/init.d/postgresql stop
+  # wait for postgresql to shutdown
+  - while sudo lsof -Pi :5432 -sTCP:LISTEN -t; do sleep 1; done
+
+  # install global deps
+  - npm install -g wait-port
+  - curl -L https://cli.hasura.io/install.sh | bash
+
+  # build docker-compose
+  - docker-compose -f ./ci/docker-compose.yaml build
 
 install:
   - yarn
 
 script:
+  # start database
+  - docker-compose -f ./ci/docker-compose.yaml up -d postgres
+  - wait-port 5432
+  # start hasura
+  - docker-compose -f ./ci/docker-compose.yaml up -d graphql-engine
+  - wait-port 8080
+  # run migrations on database
+  - yarn env-cmd ci/.env.dev knex migrate:latest
+  # seed database
+  - yarn env-cmd ci/.env.dev knex seed:run
+  # apply hasura migrations
+  - hasura metadata apply --project ./hasura/ --access-key dev
+  # build app
   - yarn build
+  # start app
+  - docker-compose -f ./ci/docker-compose.yaml up -d blockspot
+  - wait-port 3000
+  # Help to debug if an error occur
+  - docker-compose -f ./ci/docker-compose.yaml logs
+  # run e2e tests
+  - docker-compose -f ./ci/docker-compose.yaml run cypress yarn cypress:run --env updateSnapshots=true
 
 before_deploy:
   - npm i -g now

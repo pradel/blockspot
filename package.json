@@ -10,6 +10,8 @@
     "build": "NODE_ENV=production tsc --noEmit && yarn build:client && yarn build:server && cp ./hasura/schema.graphql .next/production-server/hasura",
     "build:server": "NODE_ENV=production tsc --project tsconfig.server.json",
     "build:client": "NODE_ENV=production next build",
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run --record",
     "prettier": "prettier --write '**/*.{js,ts,tsx}'",
     "start": "NODE_ENV=production node .next/production-server/server/index.js",
     "production:migrate": "yarn knex migrate:latest && ./cli-hasura-linux-amd64 metadata apply --project ./hasura/ --endpoint $HASURA_URL --access-key $HASURA_GRAPHQL_ACCESS_KEY",
@@ -73,6 +75,7 @@
   },
   "devDependencies": {
     "@babel/core": "7.1.6",
+    "@cypress/webpack-preprocessor": "4.0.2",
     "@types/express": "4.16.0",
     "@types/express-rate-limit": "2.9.3",
     "@types/google__maps": "0.5.0",
@@ -93,6 +96,8 @@
     "babel-plugin-macros": "2.4.2",
     "babel-plugin-styled-components": "1.8.0",
     "cryptocurrency-icons": "0.9.0",
+    "cypress": "3.1.2",
+    "cypress-image-snapshot": "2.3.5",
     "env-cmd": "8.0.2",
     "get-graphql-schema": "2.1.2",
     "git-cz": "^1.7.1",
@@ -104,6 +109,7 @@
     "lint-staged": "8.0.5",
     "nodemon": "1.18.6",
     "prettier": "1.15.2",
+    "ts-loader": "5.3.0",
     "ts-node": "7.0.1",
     "typeface-open-sans": "0.0.54",
     "typescript": "3.1.6"

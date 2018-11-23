@@ -7,6 +7,7 @@ declare namespace NodeJS {
     APP_URL: string;
     HASURA_URL: string;
     SLACK_WEBHOOK_URL?: string;
+    IS_CI?: string;
   }
 
   export interface Process {

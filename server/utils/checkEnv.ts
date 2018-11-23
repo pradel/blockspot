@@ -10,7 +10,7 @@ let requiredEnv = [
   'JWT_SECRET',
   'PG_CONNECTION_STRING',
 ];
-const requiredEnvProduction = ['PGSSLMODE'];
+const requiredEnvProduction: string[] = [];
 
 export const checkEnv = () => {
   if (process.env.NODE_ENV === 'production') {
