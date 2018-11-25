@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { Container } from '../../components';
 import { cities, citiesVariables } from './__generated__/cities';
 import { order_by } from '../../../__generated__/globalTypes';
+import { config } from '../../config';
 
 const CityCardContainer = styled.div<{ unsplashId: string }>`
   background: url(https://source.unsplash.com/${props => props.unsplashId}/320x180);
@@ -120,5 +121,15 @@ export const CitiesList = () => (
         );
       }}
     </CitiesQuery>
+    <p>
+      You want to suggest a new city?{' '}
+      <a
+        href={config.suggestCityUrl}
+        target="_blank"
+        style={{ color: '#e33b33' }}
+      >
+        Click here.
+      </a>
+    </p>
   </Container>
 );

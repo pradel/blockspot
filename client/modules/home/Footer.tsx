@@ -92,7 +92,7 @@ export const Footer = () => (
             <Paragraph>
               BlockSpot is an open source project that allows you to find spots
               (as restaurants, bars, clubs, stores…) where you can actually
-              spend you cryptocurrencies.
+              spend your cryptocurrencies.
             </Paragraph>
             <Paragraph>
               This is the first version of BlockSpot!

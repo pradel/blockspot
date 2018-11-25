@@ -6,7 +6,7 @@ notifications:
 sudo: false
 
 env:
-  - DOCKER_COMPOSE_VERSION=1.22.0
+  - DOCKER_COMPOSE_VERSION=1.23.1
 
 cache:
   yarn: true

@@ -19,4 +19,6 @@ export const config = {
   heightFooter: 40,
   widthColumn: 400,
   basePx: 16,
+  suggestCityUrl:
+    'https://docs.google.com/forms/d/e/1FAIpQLScwI8ZMIvbHWXOXj7vhe82WGvzklZ5rz7XPwrPWGsBlCSBdqQ/viewform',
 };
