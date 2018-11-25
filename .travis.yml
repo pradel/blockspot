@@ -64,7 +64,7 @@ script:
   # Help to debug if an error occur
   - docker-compose -f ./ci/docker-compose.yaml logs
   # run e2e tests
-  - docker-compose -f ./ci/docker-compose.yaml run cypress yarn cypress:run --env updateSnapshots=true
+  - docker-compose -f ./ci/docker-compose.yaml run cypress yarn cypress:run
 
 before_deploy:
   - npm i -g now

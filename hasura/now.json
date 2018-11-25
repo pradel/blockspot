@@ -2,6 +2,7 @@
   "name": "blockspot-hasura",
   "alias": ["hasura.blockspot.app"],
   "public": true,
+  "version": 1,
   "features": {
     "cloud": "v2"
   },
